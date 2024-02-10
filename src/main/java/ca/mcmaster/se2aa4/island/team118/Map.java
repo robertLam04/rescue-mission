@@ -5,16 +5,16 @@ import ca.mcmaster.se2aa4.island.team118.Explorer.Biome;
 
 public class Map {
     private HashMap<Integer[], Tile> TileMap;
-    private Integer[] position;
+    private Position position;
 
     public Map() {
         this.TileMap = new HashMap<>();
-        this.position = new Integer[]{0,0};
+        this.position = new Position(0,0);
     }
 
     public Tile getTile() {
         /* Returns the current Tile */
-        return TileMap.get(position);
+        return TileMap.get(position.coords);
     }
 
     public void updateFly(Direction direction) {
