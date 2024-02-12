@@ -6,10 +6,19 @@ import org.json.JSONObject;
 
 public class StupidController implements Controller {
     private final Logger logger = LogManager.getLogger();
+    int counter = 1;
     public String makeDecision(){
         JSONObject decision = new JSONObject();
-        decision.put("action", "fly"); 
+        if (counter == 1) {
+            decision.put( "action", "echo");
+            decision.put("parameters", (new JSONObject()).put("direction", "E"));
+            counter++;
+        } else {
+            decision.put("action", "stop");
+        }
+         
         logger.info("** Decision: {}",decision.toString());
         return decision.toString();
     }
+    
 }
