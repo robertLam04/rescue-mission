@@ -12,6 +12,7 @@ public class Explorer implements IExplorerRaid {
 
     private final Logger logger = LogManager.getLogger();
     Controller stupid = new StupidController();
+    public int counter = 1;
 
     @Override
     public void initialize(String s) {
