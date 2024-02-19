@@ -6,7 +6,7 @@ import org.json.JSONObject;
 
 public class StupidController implements Controller {
     private final Logger logger = LogManager.getLogger();
-    public String makeDecision(){
+    public String makeDecision(Drone drone){
         JSONObject decision = new JSONObject();
         decision.put("action", "fly"); 
         logger.info("** Decision: {}",decision.toString());

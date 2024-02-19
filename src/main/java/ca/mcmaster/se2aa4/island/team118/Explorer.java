@@ -11,8 +11,8 @@ import org.json.JSONTokener;
 public class Explorer implements IExplorerRaid {
 
     private final Logger logger = LogManager.getLogger();
-    Controller stupid = new StupidController();
-
+    Controller stupid = new Week3BonusController();
+    Drone drone;
     @Override
     public void initialize(String s) {
         logger.info("** Initializing the Exploration Command Center");
@@ -41,7 +41,7 @@ public class Explorer implements IExplorerRaid {
         logger.info("The drone is facing {}", direction);
         logger.info("Battery level is {}", batteryLevel);
         
-        Drone drone = new Drone(batteryLevel, initial_heading);
+        drone = new Drone(batteryLevel, initial_heading);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class Explorer implements IExplorerRaid {
         decision.put("action", "stop"); // we stop the exploration immediately
         logger.info("** Decision: {}",decision.toString());
         return decision.toString();*/
-        String decision = stupid.makeDecision();
+        String decision = stupid.makeDecision(drone);
         logger.info(decision);
         return decision;
     }
