@@ -5,6 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import eu.ace_design.island.bot.IExplorerRaid;
+
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
@@ -12,6 +13,8 @@ public class Explorer implements IExplorerRaid {
 
     private final Logger logger = LogManager.getLogger();
     Controller stupid = new StupidController();
+    private Drone drone;
+    private Acknowledger translator;
 
     @Override
     public void initialize(String s) {
@@ -40,16 +43,13 @@ public class Explorer implements IExplorerRaid {
 
         logger.info("The drone is facing {}", direction);
         logger.info("Battery level is {}", batteryLevel);
-        
-        Drone drone = new Drone(batteryLevel, initial_heading);
+
+        drone = new Drone(batteryLevel, initial_heading);
+
     }
 
     @Override
     public String takeDecision() {
-        /*JSONObject decision = new JSONObject();
-        decision.put("action", "stop"); // we stop the exploration immediately
-        logger.info("** Decision: {}",decision.toString());
-        return decision.toString();*/
         String decision = stupid.makeDecision();
         logger.info(decision);
         return decision;
@@ -58,14 +58,13 @@ public class Explorer implements IExplorerRaid {
     @Override
     public void acknowledgeResults(String s) {
         JSONObject response = new JSONObject(new JSONTokener(new StringReader(s)));
-        logger.info("** Response received:\n"+response.toString(2));
-        Integer cost = response.getInt("cost");
-        logger.info("The cost of the action was {}", cost);
-        String status = response.getString("status");
-        logger.info("The status of the drone is {}", status);
-        JSONObject extraInfo = response.getJSONObject("extras");
-        logger.info("Additional information received: {}", extraInfo);
-
+        translator = new JsonAcknowledger(response);
+        translator.updateBattery(drone);
+        translator.updateStatus(drone);
+        //Technical debt: should check to see if the echo and scan calls are necessary, potentially
+        //keeping track of past decisions.
+        translator.echo();
+        translator.scan();
     }
 
     @Override

@@ -4,7 +4,7 @@ import java.util.HashMap;
 import ca.mcmaster.se2aa4.island.team118.Explorer.Biome;
 
 public class Map {
-    private HashMap<Integer[], Tile> TileMap;
+    private HashMap<Position, Tile> TileMap;
     private Position position;
 
     public Map() {
@@ -14,7 +14,7 @@ public class Map {
 
     public Tile getTile() {
         /* Returns the current Tile */
-        return TileMap.get(position.coords);
+        return TileMap.get(position);
     }
 
     public void updateFly(Direction direction) {
@@ -29,19 +29,5 @@ public class Map {
     public void updateScan(Biome biome, boolean isPOI, boolean isCreek) {
         /* Need to access the most recent scan and update the current Tile */
 
-    }
-
-    private class Tile {
-        boolean isBorder;
-        boolean isSite;
-        boolean isCreek;
-        Biome biome;
-
-        private Tile(boolean isBorder, boolean isSite, boolean isCreek, Biome biome) {
-            this.isBorder = isBorder;
-            this.isSite = isSite;
-            this.isCreek = isCreek;
-            this.biome = biome;
-        }
     }
 }
