@@ -16,4 +16,17 @@ public class Tile {
         this.isCreek = isCreek;
         this.biomes = biomes;
     }
+    public Tile(){ 
+    }
+    
+    public void addIsBorder(boolean isBorder){
+        this.isBorder = isBorder;
+    }
+    public void addIsSite(boolean isSite){
+        this.isSite = isSite;
+    }public void addIsCreek(boolean isCreek){
+        this.isCreek = isCreek;
+    }public void addbiomes(JSONArray biomes){
+        this.biomes = biomes;
+    }
 }
