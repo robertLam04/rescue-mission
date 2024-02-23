@@ -4,6 +4,7 @@ public class Drone {
     private Integer battery;
     private Direction heading;
     private Condition status;
+    private Position location;
 
     public Drone(Integer initial_battery, Direction initial_direction){
         this.battery = initial_battery;
@@ -37,4 +38,16 @@ public class Drone {
         //returns drones current condition
         return this.status;
     }
+
+    public Position getLocation(){
+        return new Position(location.getX(),location.getY());
+    }
+    
+    public void moveX(Integer X){
+        location.moveX(X);
+    }
+    public void moveY(Integer Y){
+        location.moveY(Y);
+    }
+
 }
