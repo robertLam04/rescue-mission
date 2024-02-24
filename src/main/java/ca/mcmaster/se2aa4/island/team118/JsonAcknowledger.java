@@ -36,23 +36,35 @@ public class JsonAcknowledger implements Acknowledger{
         }
     }
 
-    public void echo() {
+    public Tile fly(){
+        return new Tile();
+    }
+
+    public Tile echo() {
         //record radars
         if (extraInfo.has("found")) {
+            Tile tile = new Tile();
             Integer range = extraInfo.getInt("range");
             if (extraInfo.getString("found") == "OUT_OF_RANGE") {
                 //Create a tile range - 1 tiles away in the direction that is a border
+                tile.addIsBorder(true);
+                return tile;
             } else if (extraInfo.getString("found") == "GROUND")  { 
                 //Create a tile range tiles away in the direction that is ground
+                tile.addIsGround(true);
             }
-        }   
+            return tile;
+        }
+        throw new IllegalStateException();
     }
     
-    public void scan() {
+    public Tile scan() {
         //record scanning (technical debt: how are we going to know if we are scanning while on a border)
+        boolean isGround = false;
         if (extraInfo.has("biomes")) {
             boolean isSite = extraInfo.has("sites");
             boolean isCreek = extraInfo.has("creeks");
+            isGround = true;
             JSONArray biomes = extraInfo.getJSONArray("biomes");
             if (isCreek) {
                 JSONArray creeks = extraInfo.getJSONArray("creeks");
@@ -64,8 +76,14 @@ public class JsonAcknowledger implements Acknowledger{
             }
             //Make a map method to check whether a tile at the current position exists,
             //if it does, update the tile, if not make a new tile
-            Tile tile = new Tile(false, isSite, isCreek, biomes);
+            Tile tile = new Tile(false, isSite, isCreek, isGround, biomes);
+            return tile;
+        } else {
+            Tile tile = new Tile();
+            tile.addIsGround(isGround);
+            return tile;
         }
+        
     }
     
     //record turning and moving in contoller

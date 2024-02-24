@@ -6,12 +6,14 @@ public class Tile {
     boolean isBorder;
     boolean isSite;
     boolean isCreek;
+    boolean isGround;
     JSONArray biomes;
 
-    public Tile(boolean isBorder, boolean isSite, boolean isCreek, JSONArray biomes) {
+    public Tile(boolean isBorder, boolean isSite, boolean isCreek, boolean isGround, JSONArray biomes) {
         this.isBorder = isBorder;
         this.isSite = isSite;
         this.isCreek = isCreek;
+        this.isGround = isGround;
         this.biomes = biomes;
     }
     public Tile(){
@@ -24,6 +26,8 @@ public class Tile {
         this.isSite = isSite;
     }public void addIsCreek(boolean isCreek){
         this.isCreek = isCreek;
+    }public void addIsGround(boolean isGround){
+        this.isGround = isGround;
     }public void addbiomes(JSONArray biomes){
         this.biomes = biomes;
     }
