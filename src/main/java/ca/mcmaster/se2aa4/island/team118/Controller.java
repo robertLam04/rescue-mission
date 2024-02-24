@@ -4,4 +4,5 @@ public interface Controller {
 
     public String makeDecision();
     
+    public String previousDecision();
 } 

@@ -18,11 +18,22 @@ public class StupidController implements Controller {
             //decision.put("parameters", (new JSONObject()).put("direction", "N"));
             decision.put("action", "heading");
             decision.put("parameters", (new JSONObject()).put("direction", "S"));
-            counter++;
         } else {
             decision.put("action", "stop");
         }
+        counter++;
         logger.info("** Decision: {}",decision.toString());
+        return decision.toString();
+    }
+
+    public String previousDecision(){
+        JSONObject decision = new JSONObject();
+        if (counter == 2){
+            decision.put("action", "heading");
+            decision.put("parameters", (new JSONObject()).put("direction", "S")); 
+        } else {
+            decision.put("action", "stop");
+        }
         return decision.toString();
     }
 }
