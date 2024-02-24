@@ -12,7 +12,7 @@ import org.json.JSONTokener;
 public class Explorer implements IExplorerRaid {
 
     private final Logger logger = LogManager.getLogger();
-    Controller stupid = new StupidController();
+    Controller memController = new MemoryController();
     private Drone drone;
     private Acknowledger translator;
 
@@ -50,23 +50,41 @@ public class Explorer implements IExplorerRaid {
 
     @Override
     public String takeDecision() {
-        String decision = stupid.makeDecision();
+        String decision = memController.makeDecision();
         logger.info(decision);
-        logger.info(stupid.previousDecision());
+        logger.info(memController.previousDecision());
         return decision;
     }
 
     @Override
     public void acknowledgeResults(String s) {
         JSONObject response = new JSONObject(new JSONTokener(new StringReader(s)));
+
         translator = new JsonAcknowledger(response);
+
         translator.updateBattery(drone);
+
         translator.updateStatus(drone);
         
-        //Technical debt: should check to see if the echo and scan calls are necessary, potentially
-        //keeping track of past decisions.
-        //translator.echo();
-        //translator.scan();
+        //Check what the previous decision was and call translator methods based on this
+        switch (memController.previousDecision()) {
+            case "stop": 
+                break;
+            case "echo":
+                translator.echo();
+                break;
+            case "scan":
+                translator.scan();
+                break;
+            case "fly":
+                translator.fly();
+                break;
+            case "heading":
+                //translator.heading();
+                break;
+            default:
+                throw new IllegalArgumentException();
+        }
     }
 
     @Override
