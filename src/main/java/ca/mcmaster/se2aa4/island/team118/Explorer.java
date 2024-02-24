@@ -52,6 +52,7 @@ public class Explorer implements IExplorerRaid {
     public String takeDecision() {
         String decision = stupid.makeDecision();
         logger.info(decision);
+        logger.info(stupid.previousDecision());
         return decision;
     }
 
@@ -61,10 +62,11 @@ public class Explorer implements IExplorerRaid {
         translator = new JsonAcknowledger(response);
         translator.updateBattery(drone);
         translator.updateStatus(drone);
+        
         //Technical debt: should check to see if the echo and scan calls are necessary, potentially
         //keeping track of past decisions.
-        translator.echo();
-        translator.scan();
+        //translator.echo();
+        //translator.scan();
     }
 
     @Override
