@@ -58,11 +58,10 @@ public class JsonAcknowledger implements Acknowledger{
     
     public Tile scan() {
         //record scanning (technical debt: how are we going to know if we are scanning while on a border)
-        if (extraInfo.has("biomes")) {
+        
             boolean isSite = extraInfo.has("sites");
             boolean isCreek = extraInfo.has("creeks");
             JSONArray biomes = extraInfo.getJSONArray("biomes");
-            boolean isGround = !(biomes.toList().contains("LAKE")||biomes.toList().contains("OCEAN"));
             if (isCreek) {
                 JSONArray creeks = extraInfo.getJSONArray("creeks");
                 //Store the position of these creeks somewhere
@@ -73,11 +72,20 @@ public class JsonAcknowledger implements Acknowledger{
             }
             //Make a map method to check whether a tile at the current position exists,
             //if it does, update the tile, if not make a new tile
-            Tile tile = new Tile(false, isSite, isCreek, isGround, biomes);
-            return tile;
-        } 
+            Tile tile = new Tile();
+            tile.addIsSite(isSite);
+            tile.addIsCreek(isCreek);
+            tile.addbiomes(biomes);
+            return tile;   
+    }
+
+    public Integer range(){
+        if (extraInfo.has("found")){
+            Integer range = extraInfo.getInt("range");
+            logger.info(range);
+            return range;
+        }
         throw new IllegalStateException();
-        
     }
     
     //record turning and moving in contoller
