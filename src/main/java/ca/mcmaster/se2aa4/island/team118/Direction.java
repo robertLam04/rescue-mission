@@ -52,7 +52,7 @@ public class Direction {
        }
     }
     public Heading getHeading(){
-        return this.direction;
+        return direction;
     }
     
 }
