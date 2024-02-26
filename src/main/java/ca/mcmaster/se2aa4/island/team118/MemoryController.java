@@ -16,7 +16,7 @@ public class MemoryController implements Controller {
         return decision.toString();
     }
 
-    public String previousDecision(){
-        return previous_decision.toString();
+    public JSONObject previousDecision(){
+        return previous_decision;
     }
 }

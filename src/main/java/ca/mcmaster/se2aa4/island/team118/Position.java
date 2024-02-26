@@ -18,12 +18,14 @@ public class Position {
         return this.y;
     }
 
-    public void moveX(Integer X){
+    public Position moveX(Integer X){
         this.x = this.x + X;
+        return this;
     }
 
-    public void moveY(Integer Y){
+    public Position moveY(Integer Y){
         this.y = this.y + Y;
+        return this;
     }
 
     public void setX(Integer X){

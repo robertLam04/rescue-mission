@@ -26,7 +26,7 @@ public class StupidController implements Controller {
         return decision.toString();
     }
 
-    public String previousDecision(){
+    public JSONObject previousDecision(){
         JSONObject decision = new JSONObject();
         if (counter == 2){
             decision.put("action", "heading");
@@ -34,6 +34,6 @@ public class StupidController implements Controller {
         } else {
             decision.put("action", "stop");
         }
-        return decision.toString();
+        return decision;
     }
 }

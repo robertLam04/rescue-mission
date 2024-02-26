@@ -36,8 +36,6 @@ public class JsonAcknowledger implements Acknowledger{
         }
     }
 
-    
-
     public Tile echo() {
         //record radars
         if (extraInfo.has("found")) {
@@ -87,7 +85,5 @@ public class JsonAcknowledger implements Acknowledger{
         }
         throw new IllegalStateException();
     }
-    
-    //record turning and moving in contoller
 }
 
