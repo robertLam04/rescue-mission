@@ -2,11 +2,11 @@ package ca.mcmaster.se2aa4.island.team118;
 
 public class Drone {
     private Integer battery;
-    private Direction heading;
+    private Heading heading;
     private Condition status;
     private Position location;
 
-    public Drone(Integer initial_battery, Direction initial_direction){
+    public Drone(Integer initial_battery, Heading initial_direction){
         this.battery = initial_battery;
         this.heading = initial_direction;
         this.status = Condition.Working;
@@ -16,7 +16,7 @@ public class Drone {
         this.battery -= cost;
     }
 
-    public void updateDirection(Direction current_heading){
+    public void updateDirection(Heading current_heading){
         // updates the drones current heading
         this.heading = current_heading;
     }
@@ -29,7 +29,7 @@ public class Drone {
         return this.battery;
     }
 
-    public Direction getHeading(){
+    public Heading getHeading(){
         //returns drones current direction
         return this.heading;
     }

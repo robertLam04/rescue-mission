@@ -23,19 +23,19 @@ public class Explorer implements IExplorerRaid {
         logger.info("** Initialization info:\n {}",info.toString(2));
         String direction = info.getString("heading").toLowerCase();
         Integer batteryLevel = info.getInt("budget");
-        Direction initial_heading;
+        Heading initial_heading;
         switch (direction) {
             case "n":
-                initial_heading = Direction.NORTH;
+                initial_heading = Heading.NORTH;
                 break;
             case "e":
-                initial_heading = Direction.EAST;
+                initial_heading = Heading.EAST;
                 break;
             case "s":
-                initial_heading = Direction.SOUTH;
+                initial_heading = Heading.SOUTH;
                 break;
             case "w":
-                initial_heading = Direction.WEST;
+                initial_heading = Heading.WEST;
                 break;
             default:
                 throw new IllegalArgumentException();
