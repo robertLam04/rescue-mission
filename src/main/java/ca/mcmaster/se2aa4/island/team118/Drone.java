@@ -1,5 +1,7 @@
 package ca.mcmaster.se2aa4.island.team118;
 
+import ca.mcmaster.se2aa4.island.team118.Direction;
+
 public class Drone {
     private Integer battery;
     private Direction heading;
@@ -29,7 +31,7 @@ public class Drone {
         return this.battery;
     }
 
-    public Direction getHeading(){
+    public Direction getDroneHeading(){
         //returns drones current direction
         return this.heading;
     }
@@ -43,11 +45,70 @@ public class Drone {
         return new Position(location.getX(),location.getY());
     }
     
-    public void moveX(Integer X){
-        location.moveX(X);
+    public void fly(){
+        switch (heading.getHeading()) {
+            case Heading.NORTH:
+                location.moveY(1);
+                break;
+            case Heading.EAST:
+                location.moveX(1);
+            case Heading.SOUTH:
+                location.moveY(-1);
+            case Heading.WEST:
+                location.moveX(-1);
+            default:
+                throw new IllegalArgumentException();
+       }
     }
-    public void moveY(Integer Y){
-        location.moveY(Y);
+    public void heading(Direction turningDirection){
+        switch (this.heading.getHeading()) {
+            case Heading.NORTH:
+                if (this.heading.left() == turningDirection.getHeading()){
+                    location.moveY(1);
+                    location.moveX(-1);
+                    this.heading = turningDirection;
+                } else if (this.heading.right() == turningDirection.getHeading()) {
+                    location.moveY(1);
+                    location.moveX(1);
+                    this.heading = turningDirection;
+                }
+                break;
+            case Heading.EAST:
+                if (this.heading.left() == turningDirection.getHeading()){
+                    location.moveY(1);
+                    location.moveX(1);
+                    this.heading = turningDirection;
+                } else if (this.heading.right() == turningDirection.getHeading()) {
+                    location.moveY(-1);
+                    location.moveX(1);
+                    this.heading = turningDirection;
+                }
+                break;
+            case Heading.SOUTH:
+                if (this.heading.left() == turningDirection.getHeading()){
+                    location.moveY(-1);
+                    location.moveX(1);
+                    this.heading = turningDirection;
+                } else if (this.heading.right() == turningDirection.getHeading()) {
+                    location.moveY(-1);
+                    location.moveX(-1);
+                    this.heading = turningDirection;
+                }
+                break;
+            case Heading.WEST:
+                if (this.heading.left() == turningDirection.getHeading()){
+                    location.moveY(-1);
+                    location.moveX(-1);
+                    this.heading = turningDirection;
+                } else if (this.heading.right() == turningDirection.getHeading()) {
+                    location.moveY(1);
+                    location.moveX(-1);
+                    this.heading = turningDirection;
+                }
+                break;
+            default:
+                throw new IllegalArgumentException();
+       }
     }
 
 }
