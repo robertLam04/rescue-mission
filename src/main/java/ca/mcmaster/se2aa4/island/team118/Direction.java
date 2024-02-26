@@ -51,6 +51,9 @@ public class Direction {
                 throw new IllegalArgumentException();
        }
     }
+    public Heading getHeading(){
+        return this.direction;
+    }
     
 }
 
