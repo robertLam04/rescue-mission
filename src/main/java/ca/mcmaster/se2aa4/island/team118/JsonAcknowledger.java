@@ -36,9 +36,7 @@ public class JsonAcknowledger implements Acknowledger{
         }
     }
 
-    public Tile fly(){
-        return new Tile();
-    }
+    
 
     public Tile echo() {
         //record radars
@@ -54,17 +52,15 @@ public class JsonAcknowledger implements Acknowledger{
                 tile.addIsGround(true);
             }
             return tile;
-        }
+        } 
         throw new IllegalStateException();
     }
     
     public Tile scan() {
         //record scanning (technical debt: how are we going to know if we are scanning while on a border)
-        boolean isGround = false;
-        if (extraInfo.has("biomes")) {
+        
             boolean isSite = extraInfo.has("sites");
             boolean isCreek = extraInfo.has("creeks");
-            isGround = true;
             JSONArray biomes = extraInfo.getJSONArray("biomes");
             if (isCreek) {
                 JSONArray creeks = extraInfo.getJSONArray("creeks");
@@ -76,14 +72,20 @@ public class JsonAcknowledger implements Acknowledger{
             }
             //Make a map method to check whether a tile at the current position exists,
             //if it does, update the tile, if not make a new tile
-            Tile tile = new Tile(false, isSite, isCreek, isGround, biomes);
-            return tile;
-        } else {
             Tile tile = new Tile();
-            tile.addIsGround(isGround);
-            return tile;
+            tile.addIsSite(isSite);
+            tile.addIsCreek(isCreek);
+            tile.addbiomes(biomes);
+            return tile;   
+    }
+
+    public Integer range(){
+        if (extraInfo.has("found")){
+            Integer range = extraInfo.getInt("range");
+            logger.info(range);
+            return range;
         }
-        
+        throw new IllegalStateException();
     }
     
     //record turning and moving in contoller
