@@ -25,13 +25,13 @@ public class Direction {
     }
     public Heading left(){
         switch (this.direction) {
-            case Heading.NORTH:
+            case NORTH:
                 return Heading.WEST;
-            case Heading.EAST:
+            case EAST:
                 return Heading.NORTH;
-            case Heading.SOUTH:
+            case SOUTH:
                 return Heading.EAST;
-            case Heading.WEST:
+            case WEST:
                 return Heading.SOUTH;
             default:
                 throw new IllegalArgumentException();
@@ -39,13 +39,13 @@ public class Direction {
     }
     public Heading right(){
         switch (this.direction) {
-            case Heading.NORTH:
+            case NORTH:
                 return Heading.EAST;
-            case Heading.EAST:
+            case EAST:
                 return Heading.SOUTH;
-            case Heading.SOUTH:
+            case SOUTH:
                 return Heading.WEST;
-            case Heading.WEST:
+            case WEST:
                 return Heading.NORTH;
             default:
                 throw new IllegalArgumentException();
