@@ -1,7 +1,5 @@
 package ca.mcmaster.se2aa4.island.team118;
 
-
-
 public class Direction {
     private Heading direction;
 
@@ -51,6 +49,7 @@ public class Direction {
                 throw new IllegalArgumentException();
        }
     }
+
     public Heading getHeading(){
         return direction;
     }

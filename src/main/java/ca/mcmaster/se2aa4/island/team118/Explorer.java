@@ -13,6 +13,7 @@ public class Explorer implements IExplorerRaid {
 
     private final Logger logger = LogManager.getLogger();
     Controller memController = new MemoryController();
+    private Map map;
     private Drone drone;
     private Acknowledger translator;
 
@@ -23,28 +24,13 @@ public class Explorer implements IExplorerRaid {
         logger.info("** Initialization info:\n {}",info.toString(2));
         String direction = info.getString("heading").toLowerCase();
         Integer batteryLevel = info.getInt("budget");
-        Direction initial_heading;
-        switch (direction) {
-            case "n":
-                initial_heading = Direction.NORTH;
-                break;
-            case "e":
-                initial_heading = Direction.EAST;
-                break;
-            case "s":
-                initial_heading = Direction.SOUTH;
-                break;
-            case "w":
-                initial_heading = Direction.WEST;
-                break;
-            default:
-                throw new IllegalArgumentException();
-            }
+        Direction initial_heading = new Direction(direction);
 
         logger.info("The drone is facing {}", direction);
         logger.info("Battery level is {}", batteryLevel);
 
         drone = new Drone(batteryLevel, initial_heading);
+        map = new Map();
 
     }
 
@@ -65,22 +51,47 @@ public class Explorer implements IExplorerRaid {
         translator.updateBattery(drone);
 
         translator.updateStatus(drone);
-        
+
+        Tile tile;
+       
         //Check what the previous decision was and call translator methods based on this
-        switch (memController.previousDecision()) {
+        JSONObject previous = memController.previousDecision();
+        switch (previous.getString("action")) {
             case "stop": 
                 break;
             case "echo":
-                translator.echo();
+                tile = translator.echo();
+                Integer range = translator.range();
+                //Check direction of echo and place tile
+                JSONObject params = previous.getJSONObject("Direction");
+                String direction = params.getString("Direction");
+                Direction echo_dir = new Direction(direction);
+                //Technical Debt - Violates Law of demeter, digging into drone object to get Position
+                switch(echo_dir.getHeading()) {
+                    case NORTH:
+                        map.putTile(drone.getLocation().moveY(range), tile);
+                        break;
+                    case EAST:
+                        map.putTile(drone.getLocation().moveX(range), tile);
+                        break;
+                    case SOUTH:
+                        map.putTile(drone.getLocation().moveY(-range), tile);
+                        break;
+                    case WEST:
+                        map.putTile(drone.getLocation().moveX(-range), tile);
+                        break;
+                    default:
+                        throw new IllegalArgumentException();
+                }
                 break;
             case "scan":
-                translator.scan();
+                tile = translator.scan();
+                map.putTile(drone.getLocation(),tile);
                 break;
             case "fly":
-                translator.fly();
+                
                 break;
             case "heading":
-                //translator.heading();
                 break;
             default:
                 throw new IllegalArgumentException();
