@@ -1,6 +1,6 @@
 package ca.mcmaster.se2aa4.island.team118;
 
-public interface Acknowledger {
+public interface Reader {
 
     public Tile scan();
     public Tile echo();

@@ -26,14 +26,8 @@ public class StupidController implements Controller {
         return decision.toString();
     }
 
-    public JSONObject previousDecision(){
-        JSONObject decision = new JSONObject();
-        if (counter == 2){
-            decision.put("action", "heading");
-            decision.put("parameters", (new JSONObject()).put("direction", "S")); 
-        } else {
-            decision.put("action", "stop");
-        }
-        return decision;
+    public void acknowledge(JSONObject response) {
+        
     }
+    
 }

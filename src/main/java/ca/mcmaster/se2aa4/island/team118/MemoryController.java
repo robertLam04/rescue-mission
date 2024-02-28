@@ -16,6 +16,10 @@ public class MemoryController implements Controller {
         return decision.toString();
     }
 
+    public void acknowledge(JSONObject response) {
+        
+    }
+
     public JSONObject previousDecision(){
         return previous_decision;
     }

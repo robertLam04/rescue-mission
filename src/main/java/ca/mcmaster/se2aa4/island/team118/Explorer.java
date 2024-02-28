@@ -12,10 +12,7 @@ import org.json.JSONTokener;
 public class Explorer implements IExplorerRaid {
 
     private final Logger logger = LogManager.getLogger();
-    Controller memController = new MemoryController();
-    private Map map;
-    private Drone drone;
-    private Acknowledger translator;
+    Controller midController;
 
     @Override
     public void initialize(String s) {
@@ -29,73 +26,20 @@ public class Explorer implements IExplorerRaid {
         logger.info("The drone is facing {}", direction);
         logger.info("Battery level is {}", batteryLevel);
 
-        drone = new Drone(batteryLevel, initial_heading);
-        map = new Map();
+       midController = new MidController(batteryLevel, initial_heading);
 
     }
 
     @Override
     public String takeDecision() {
-        String decision = memController.makeDecision();
-        logger.info(decision);
-        logger.info(memController.previousDecision());
+        String decision = midController.makeDecision();
         return decision;
     }
 
     @Override
     public void acknowledgeResults(String s) {
-        JSONObject response = new JSONObject(new JSONTokener(new StringReader(s)));
-
-        translator = new JsonAcknowledger(response);
-
-        translator.updateBattery(drone);
-
-        translator.updateStatus(drone);
-
-        Tile tile;
-       
-        //Check what the previous decision was and call translator methods based on this
-        JSONObject previous = memController.previousDecision();
-        switch (previous.getString("action")) {
-            case "stop": 
-                break;
-            case "echo":
-                tile = translator.echo();
-                Integer range = translator.range();
-                //Check direction of echo and place tile
-                JSONObject params = previous.getJSONObject("Direction");
-                String direction = params.getString("Direction");
-                Direction echo_dir = new Direction(direction);
-                //Technical Debt - Violates Law of demeter, digging into drone object to get Position
-                switch(echo_dir.getHeading()) {
-                    case NORTH:
-                        map.putTile(drone.getLocation().moveY(range), tile);
-                        break;
-                    case EAST:
-                        map.putTile(drone.getLocation().moveX(range), tile);
-                        break;
-                    case SOUTH:
-                        map.putTile(drone.getLocation().moveY(-range), tile);
-                        break;
-                    case WEST:
-                        map.putTile(drone.getLocation().moveX(-range), tile);
-                        break;
-                    default:
-                        throw new IllegalArgumentException();
-                }
-                break;
-            case "scan":
-                tile = translator.scan();
-                map.putTile(drone.getLocation(),tile);
-                break;
-            case "fly":
-                
-                break;
-            case "heading":
-                break;
-            default:
-                throw new IllegalArgumentException();
-        }
+        JSONObject response = new JSONObject(new JSONTokener(new StringReader(s))); 
+        midController.acknowledge(response);
     }
 
     @Override
