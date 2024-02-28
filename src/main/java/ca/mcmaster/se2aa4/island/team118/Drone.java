@@ -1,7 +1,5 @@
 package ca.mcmaster.se2aa4.island.team118;
 
-import ca.mcmaster.se2aa4.island.team118.Direction;
-
 public class Drone {
     private Integer battery;
     private Direction heading;
@@ -12,6 +10,7 @@ public class Drone {
         this.battery = initial_battery;
         this.heading = initial_direction;
         this.status = Condition.Working;
+        this.location = new Position(0, 0);
     }
     public void updateBattery(Integer cost){
         // updates the drone battery level based on most recent action's cost
@@ -42,7 +41,7 @@ public class Drone {
     }
 
     public Position getLocation(){
-        return new Position(location.getX(),location.getY());
+        return new Position(location);
     }
     
     public void fly(){

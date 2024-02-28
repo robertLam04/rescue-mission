@@ -5,7 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class JsonAcknowledger implements Acknowledger{
+public class JsonReader implements Reader{
 
     private final Logger logger = LogManager.getLogger();
     private JSONObject response;
@@ -13,7 +13,7 @@ public class JsonAcknowledger implements Acknowledger{
     private String status;
     private JSONObject extraInfo;
 
-    public JsonAcknowledger(JSONObject response) {
+    public JsonReader(JSONObject response) {
         this.response = response;
         this.cost = response.getInt("cost");
         this.extraInfo = response.getJSONObject("extras");
@@ -44,11 +44,11 @@ public class JsonAcknowledger implements Acknowledger{
                 //Create a tile range - 1 tiles away in the direction that is a border
                 tile.addIsBorder(true);
                 return tile;
-            } else { 
+            } else if (extraInfo.getString("found") == "GROUND")  { 
                 //Create a tile range tiles away in the direction that is ground
                 tile.addIsGround(true);
-                return tile;
             }
+            return tile;
         } 
         throw new IllegalStateException();
     }

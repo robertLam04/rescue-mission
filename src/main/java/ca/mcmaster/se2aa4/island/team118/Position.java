@@ -10,6 +10,11 @@ public class Position {
         this.y = Y;
     }
 
+    public Position(Position pos) {
+        this.x = pos.getX();
+        this.y = pos.getY();
+    }
+
     public Integer getX(){
         return this.x;
     }
@@ -34,6 +39,10 @@ public class Position {
 
     public void setY(Integer Y){
         this.y = Y;
+    }
+
+    public String toString() {
+        return "(" + this.x + ", " + this.y + ")";
     }
 
 
