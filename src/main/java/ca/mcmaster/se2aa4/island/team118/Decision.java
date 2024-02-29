@@ -16,9 +16,10 @@ public class Decision {
         return stop;
     }
 
-    public JSONObject echo() {
+    public JSONObject echo(Heading direction) {
         JSONObject echo = new JSONObject();
         echo.put("action","echo");
+        echo.put("parameters", (new JSONObject()).put("direction", direction.toString()));
         return echo;
     }
 
@@ -28,9 +29,10 @@ public class Decision {
         return scan;
     }
 
-    public JSONObject heading() {
+    public JSONObject heading(Heading direction) {
         JSONObject heading = new JSONObject();
         heading.put("action","echo");
+        heading.put("parameters", (new JSONObject()).put("direction", direction.toString()));
         return heading;
     }
 
