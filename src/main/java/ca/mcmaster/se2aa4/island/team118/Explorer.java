@@ -21,12 +21,12 @@ public class Explorer implements IExplorerRaid {
         logger.info("** Initialization info:\n {}",info.toString(2));
         String direction = info.getString("heading").toLowerCase();
         Integer batteryLevel = info.getInt("budget");
-        Direction initial_heading = new Direction(direction);
+        Direction initial_heading = Direction.fromString(direction);
 
         logger.info("The drone is facing {}", direction);
         logger.info("Battery level is {}", batteryLevel);
 
-       midController = new MidController(batteryLevel, initial_heading);
+        midController = new MidController(batteryLevel, initial_heading);
 
     }
 

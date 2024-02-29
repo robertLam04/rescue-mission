@@ -1,57 +1,60 @@
 package ca.mcmaster.se2aa4.island.team118;
 
-public class Direction {
-    private Heading direction;
+public enum Direction {
+    n("n"), e("e"), s("s"), w("w");
+    
+    private final String value;
 
-    public Direction(String s){
-        switch (s.toLowerCase()) {
+    Direction(String s) {
+        this.value = s.toLowerCase();
+    }
+
+    public static Direction fromString(String string_direction) {
+        switch (string_direction.toLowerCase()) {
             case "n":
-                this.direction = Heading.NORTH;
-                break;
+                return n;
             case "e":
-                this.direction = Heading.EAST;
-                break;
+                return e;
             case "s":
-                this.direction = Heading.SOUTH;
-                break;
+                return s;
             case "w":
-                this.direction = Heading.WEST;
-                break;
+                return w;
             default:
-                throw new IllegalArgumentException();
-            }
+                throw new IllegalArgumentException("Invalid direction: " + s);
+        }
     }
-    public Heading left(){
-        switch (this.direction) {
-            case NORTH:
-                return Heading.WEST;
-            case EAST:
-                return Heading.NORTH;
-            case SOUTH:
-                return Heading.EAST;
-            case WEST:
-                return Heading.SOUTH;
+
+    public Direction left(){
+        switch (this) {
+            case n:
+                return w;
+            case e:
+                return n;
+            case s:
+                return e;
+            case w:
+                return s;
             default:
                 throw new IllegalArgumentException();
        }
     }
-    public Heading right(){
-        switch (this.direction) {
-            case NORTH:
-                return Heading.EAST;
-            case EAST:
-                return Heading.SOUTH;
-            case SOUTH:
-                return Heading.WEST;
-            case WEST:
-                return Heading.NORTH;
+    public Direction right(){
+        switch (this) {
+            case n:
+                return e;
+            case e:
+                return s;
+            case s:
+                return w;
+            case w:
+                return n;
             default:
                 throw new IllegalArgumentException();
        }
     }
 
-    public Heading getHeading(){
-        return direction;
+    public Direction getHeading(){
+        return this;
     }
     
 }

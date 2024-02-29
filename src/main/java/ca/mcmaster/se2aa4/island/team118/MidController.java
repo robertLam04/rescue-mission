@@ -3,6 +3,8 @@ package ca.mcmaster.se2aa4.island.team118;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
+import java.util.Queue;
+import java.util.LinkedList;
 
 public class MidController implements Controller {
     private final Logger logger = LogManager.getLogger();
@@ -10,40 +12,31 @@ public class MidController implements Controller {
     private Drone drone;
     private GameMap map;
     private Reader reader;
-    private int count = 1;
     private Phase phase;
+    private Decision decision = new Decision();
+    private Queue<JSONObject> decision_queue;
 
     public MidController(Integer battery, Direction initial_direction) {
         drone = new Drone(battery,initial_direction);
         map = new GameMap();
         phase = Phase.FINDGROUND;
+        decision_queue = new LinkedList<>();
     }
 
     public String makeDecision() {
-        /*if (count == 1) {
-            JSONObject decision = new JSONObject();
-            logger.info(drone.getLocation().toString());
-            decision.put("action", "heading");
-            decision.put("parameters", (new JSONObject()).put("direction", "S"));
-            previous_decision = decision;
-            count++;
-            return decision.toString();
-        } else {
-            JSONObject decision = new JSONObject();
-            decision.put("action", "stop");
-            previous_decision = decision;
-            return decision.toString();
-        }
+       
+        //if (battery == low) { return decision.stop().toString() }
 
-        JSONObject decision = new JSONObject();
+        if (Phase.FINDGROUND.equals(phase)) {
+            decision_queue.add(decision.echo(drone.getDroneHeading()));
+            decision_queue.add(decision.echo(drone.getDroneHeading().left()));
+            decision_queue.add(decision.echo(drone.getDroneHeading().right()));
 
-        if (phase == Phase.FINDGROUND) {
+        } 
+        
+        previous_decision = decision.stop();
+        return decision.stop().toString();
 
-        } else if (phase == Phase.FLYGROUND) {
-
-        }*/
-
-        return previous_decision.toString(); // place holder to make method work delete later
     }
 
     public void acknowledge(JSONObject response) {
@@ -64,21 +57,21 @@ public class MidController implements Controller {
                 //Check direction of echo and place tile
                 JSONObject params = previous_decision.getJSONObject("parameters");
                 String direction = params.getString("direction");
-                Direction echo_dir = new Direction(direction);
+                Direction echo_dir = Direction.fromString(direction);
                 //Technical Debt - Violates Law of demeter, digging into drone object to get Position
                 switch(echo_dir.getHeading()) {
-                    case NORTH:
+                    case n:
                         map.putTile(new Position(drone.getLocation().moveY(range)), tile);
                         break;
-                    case EAST:
+                    case e:
                         map.putTile(new Position(drone.getLocation().moveX(range)), tile);
                         break;
-                    case SOUTH:
+                    case s:
                         logger.info("Placing tile");
                         map.putTile(new Position(drone.getLocation().moveY(-range)), tile);
                         logger.info("Tile placed");
                         break;
-                    case WEST:
+                    case w:
                         map.putTile(new Position(drone.getLocation().moveX(-range)), tile);
                         break;
                     default:
@@ -99,7 +92,7 @@ public class MidController implements Controller {
                 break;
             case "heading":
                 //Get the direction of the turn
-                Direction turn_heading = new Direction(previous_decision.getJSONObject("parameters").getString("direction"));
+                Direction turn_heading = Direction.fromString(previous_decision.getJSONObject("parameters").getString("direction"));
                 //Update the drones position
                 drone.heading(turn_heading);
                 //Create an unknown (empty) tile
