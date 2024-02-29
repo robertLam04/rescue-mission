@@ -20,7 +20,7 @@ public class MidController implements Controller {
     }
 
     public String makeDecision() {
-        /* if (count == 1) {
+        /*if (count == 1) {
             JSONObject decision = new JSONObject();
             logger.info(drone.getLocation().toString());
             decision.put("action", "heading");
@@ -33,20 +33,17 @@ public class MidController implements Controller {
             decision.put("action", "stop");
             previous_decision = decision;
             return decision.toString();
-        }*/
+        }
 
         JSONObject decision = new JSONObject();
-        
+
         if (phase == Phase.FINDGROUND) {
-            
+
         } else if (phase == Phase.FLYGROUND) {
 
-        }
-        
+        }*/
 
-
-
-        
+        return previous_decision.toString(); // place holder to make method work delete later
     }
 
     public void acknowledge(JSONObject response) {
