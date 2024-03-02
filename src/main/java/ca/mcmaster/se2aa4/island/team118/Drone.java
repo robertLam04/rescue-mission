@@ -43,6 +43,10 @@ public class Drone {
     public Position getLocation(){
         return new Position(location);
     }
+
+    public double distanceToStop(){
+        return location.distanceFrom(new Position(0,0));
+    }
     
     public void fly(){
         switch (heading.getHeading()) {
@@ -51,10 +55,13 @@ public class Drone {
                 break;
             case e:
                 location.moveX(1);
+                break;
             case s:
                 location.moveY(-1);
+                break;
             case w:
                 location.moveX(-1);
+                break;
             default:
                 throw new IllegalArgumentException();
        }

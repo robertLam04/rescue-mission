@@ -45,5 +45,10 @@ public class Position {
         return "(" + this.x + ", " + this.y + ")";
     }
 
+    public double distanceFrom(Position second_pos){
+        Integer diff_x = this.x - second_pos.getX();
+        Integer diff_y = this.y - second_pos.getY();
+        return Math.sqrt((diff_x*diff_x) + (diff_y*diff_y));
+    }
 
 }
