@@ -14,28 +14,25 @@ public class MidController implements Controller {
     private Reader reader;
     private Phase phase;
     private Decision decision = new Decision();
-    private Queue<JSONObject> decision_queue;
 
     public MidController(Integer battery, Direction initial_direction) {
-        drone = new Drone(battery,initial_direction);
+        drone = new Drone(battery, initial_direction);
         map = new GameMap();
-        phase = Phase.FINDGROUND;
-        decision_queue = new LinkedList<>();
+        phase = new findGround(drone);
     }
 
     public String makeDecision() {
        
         //if (battery == low) { return decision.stop().toString() }
 
-        if (Phase.FINDGROUND.equals(phase)) {
-            decision_queue.add(decision.echo(drone.getDroneHeading()));
-            decision_queue.add(decision.echo(drone.getDroneHeading().left()));
-            decision_queue.add(decision.echo(drone.getDroneHeading().right()));
+        //If phase is final stop
+        if (phase.isFinal()) {
+            previous_decision = decision.stop();
+            return decision.stop().toString();
+        }
 
-        } 
-        
-        previous_decision = decision.stop();
-        return decision.stop().toString();
+        previous_decision = phase.getNextDecision();
+        return previous_decision.toString();
 
     }
 
@@ -53,6 +50,12 @@ public class MidController implements Controller {
                 break;
             case "echo":
                 tile = reader.echo();
+                
+                //Update the phase if the tile is ground
+                if (tile.isGround && phase.getCurrentPhase().equals("FindGround")) {
+                    phase = phase.NextPhase();
+                }
+
                 Integer range = reader.range();
                 //Check direction of echo and place tile
                 JSONObject params = previous_decision.getJSONObject("parameters");
@@ -60,18 +63,16 @@ public class MidController implements Controller {
                 Direction echo_dir = Direction.fromString(direction);
                 //Technical Debt - Violates Law of demeter, digging into drone object to get Position
                 switch(echo_dir.getHeading()) {
-                    case n:
+                    case N:
                         map.putTile(new Position(drone.getLocation().moveY(range)), tile);
                         break;
-                    case e:
+                    case E:
                         map.putTile(new Position(drone.getLocation().moveX(range)), tile);
                         break;
-                    case s:
-                        logger.info("Placing tile");
+                    case S:
                         map.putTile(new Position(drone.getLocation().moveY(-range)), tile);
-                        logger.info("Tile placed");
                         break;
-                    case w:
+                    case W:
                         map.putTile(new Position(drone.getLocation().moveX(-range)), tile);
                         break;
                     default:
