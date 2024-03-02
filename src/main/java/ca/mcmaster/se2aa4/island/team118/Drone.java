@@ -45,23 +45,26 @@ public class Drone {
     }
     
     public void fly(){
-        switch (heading.getHeading()) {
-            case n:
+        switch (heading) {
+            case N:
                 location.moveY(1);
                 break;
-            case e:
+            case E:
                 location.moveX(1);
-            case s:
+                break;
+            case S:
                 location.moveY(-1);
-            case w:
+                break;
+            case W:
                 location.moveX(-1);
+                break;
             default:
                 throw new IllegalArgumentException();
        }
     }
     public void heading(Direction turningDirection){
         switch (this.heading.getHeading()) {
-            case n:
+            case N:
                 if (this.heading.left() == turningDirection.getHeading()){
                     location.moveY(1);
                     location.moveX(-1);
@@ -72,7 +75,7 @@ public class Drone {
                     this.heading = turningDirection;
                 }
                 break;
-            case e:
+            case E:
                 if (this.heading.left() == turningDirection.getHeading()){
                     location.moveY(1);
                     location.moveX(1);
@@ -83,7 +86,7 @@ public class Drone {
                     this.heading = turningDirection;
                 }
                 break;
-            case s:
+            case S:
                 if (this.heading.left() == turningDirection.getHeading()){
                     location.moveY(-1);
                     location.moveX(1);
@@ -94,7 +97,7 @@ public class Drone {
                     this.heading = turningDirection;
                 }
                 break;
-            case w:
+            case W:
                 if (this.heading.left() == turningDirection.getHeading()){
                     location.moveY(-1);
                     location.moveX(-1);

@@ -18,7 +18,7 @@ public class Decision {
 
     public JSONObject echo(Direction direction) {
         JSONObject echo = new JSONObject();
-        echo.put("action","heading");
+        echo.put("action","echo");
         echo.put("parameters", (new JSONObject()).put("direction", direction.toString()));
         return echo;
     }
@@ -31,7 +31,7 @@ public class Decision {
 
     public JSONObject heading(Direction direction) {
         JSONObject heading = new JSONObject();
-        heading.put("action","echo");
+        heading.put("action","heading");
         heading.put("parameters", (new JSONObject()).put("direction", direction.toString()));
         return heading;
     }

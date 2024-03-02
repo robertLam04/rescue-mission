@@ -1,7 +1,7 @@
 package ca.mcmaster.se2aa4.island.team118;
 
 public enum Direction {
-    n("n"), e("e"), s("s"), w("w");
+    N("n"), E("e"), S("s"), W("w");
     
     private final String value;
 
@@ -12,42 +12,42 @@ public enum Direction {
     public static Direction fromString(String string_direction) {
         switch (string_direction.toLowerCase()) {
             case "n":
-                return n;
+                return N;
             case "e":
-                return e;
+                return E;
             case "s":
-                return s;
+                return S;
             case "w":
-                return w;
+                return W;
             default:
-                throw new IllegalArgumentException("Invalid direction: " + s);
+                throw new IllegalArgumentException("Invalid direction: " + S);
         }
     }
 
     public Direction left(){
         switch (this) {
-            case n:
-                return w;
-            case e:
-                return n;
-            case s:
-                return e;
-            case w:
-                return s;
+            case N:
+                return W;
+            case E:
+                return N;
+            case S:
+                return E;
+            case W:
+                return S;
             default:
                 throw new IllegalArgumentException();
        }
     }
     public Direction right(){
         switch (this) {
-            case n:
-                return e;
-            case e:
-                return s;
-            case s:
-                return w;
-            case w:
-                return n;
+            case N:
+                return E;
+            case E:
+                return S;
+            case S:
+                return W;
+            case W:
+                return N;
             default:
                 throw new IllegalArgumentException();
        }
