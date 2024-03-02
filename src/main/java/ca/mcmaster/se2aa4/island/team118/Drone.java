@@ -43,6 +43,10 @@ public class Drone {
     public Position getLocation(){
         return new Position(location);
     }
+
+    public double distanceToStop(){
+        return location.distanceFrom(new Position(0,0));
+    }
     
     public void fly(){
         switch (heading) {
