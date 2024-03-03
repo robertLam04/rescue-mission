@@ -18,7 +18,7 @@ public class MidController implements Controller {
     public MidController(Integer battery, Direction initial_direction) {
         drone = new Drone(battery, initial_direction);
         map = new GameMap();
-        phase = new findGround(drone);
+        phase = new FindGround(drone);
     }
 
     public String makeDecision() {
@@ -50,12 +50,6 @@ public class MidController implements Controller {
                 break;
             case "echo":
                 tile = reader.echo();
-                
-                //Update the phase if the tile is ground
-                if (tile.isGround && phase.getCurrentPhase().equals("FindGround")) {
-                    phase = phase.NextPhase();
-                }
-
                 Integer range = reader.range();
                 //Check direction of echo and place tile
                 JSONObject params = previous_decision.getJSONObject("parameters");
@@ -65,15 +59,31 @@ public class MidController implements Controller {
                 switch(echo_dir.getHeading()) {
                     case N:
                         map.putTile(new Position(drone.getLocation().moveY(range)), tile);
+                        //Update the phase if the tile is ground
+                        if (tile.isGround && phase.getCurrentPhase().equals("FindGround")) {
+                            phase = new FlyToGround(drone, echo_dir, range + 1);
+                        }
                         break;
                     case E:
                         map.putTile(new Position(drone.getLocation().moveX(range)), tile);
+                        //Update the phase if the tile is ground
+                        if (tile.isGround && phase.getCurrentPhase().equals("FindGround")) {
+                            phase = new FlyToGround(drone, echo_dir, range + 1);
+                        }
                         break;
                     case S:
                         map.putTile(new Position(drone.getLocation().moveY(-range)), tile);
+                        //Update the phase if the tile is ground
+                        if (tile.isGround && phase.getCurrentPhase().equals("FindGround")) {
+                            phase = new FlyToGround(drone, echo_dir, range + 1);
+                        }
                         break;
                     case W:
                         map.putTile(new Position(drone.getLocation().moveX(-range)), tile);
+                        //Update the phase if the tile is ground
+                        if (tile.isGround && phase.getCurrentPhase().equals("FindGround")) {
+                            phase = new FlyToGround(drone, echo_dir, range + 1);
+                        }
                         break;
                     default:
                         throw new IllegalArgumentException();
@@ -82,6 +92,9 @@ public class MidController implements Controller {
             case "scan":
                 tile = reader.scan();
                 map.putTile(drone.getLocation(),tile);
+                
+                phase = new ReturnHome();
+
                 break;
             case "fly":
                 //Update the drones position

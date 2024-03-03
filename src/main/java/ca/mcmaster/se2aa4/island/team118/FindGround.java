@@ -4,24 +4,19 @@ import java.util.LinkedList;
 import java.util.Queue;
 import org.json.JSONObject;
 
-public class findGround implements Phase {
+public class FindGround implements Phase {
 
     private Decision decision = new Decision();
     private Queue<JSONObject> decision_queue = new LinkedList<>();
     private Drone drone;
 
-    public findGround(Drone drone) {
+    public FindGround(Drone drone) {
         this.drone = drone;
         this.decision_queue = FindGroundQ();
     }
 
     public String getCurrentPhase() {
         return "FindGround";
-    }
-
-    @Override
-    public Phase NextPhase() {
-        return new ReturnHome();
     }
 
     @Override
