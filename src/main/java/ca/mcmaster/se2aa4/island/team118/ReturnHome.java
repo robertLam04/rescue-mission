@@ -7,11 +7,6 @@ public class ReturnHome implements Phase {
     private Decision decision = new Decision();
 
     @Override
-    public Phase NextPhase() {
-        return new ReturnHome();
-    }
-
-    @Override
     public String getCurrentPhase() {
         return "ReturnHome";
     }

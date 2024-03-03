@@ -4,8 +4,6 @@ import org.json.JSONObject;
 
 public interface Phase {
 
-    public Phase NextPhase();
-
     public String getCurrentPhase();
 
     public JSONObject getNextDecision();
