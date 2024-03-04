@@ -23,7 +23,13 @@ public class MidController implements Controller {
 
     public String makeDecision() {
        
-        //if (battery == low) { return decision.stop().toString() }
+        if (((int)drone.distanceToStop() == 0)&&(drone.getBattery()<=7)){
+            return decision.stop().toString();
+        } else if ((drone.distanceToStop() <= 10)&&(drone.getBattery() <= 15)) { 
+            return decision.stop().toString() ;
+        } else if ((drone.distanceToStop() > 10)&&(drone.getBattery() <= 25)) {
+            return decision.stop().toString();
+        }
 
         //If phase is final stop
         if (phase.isFinal()) {
