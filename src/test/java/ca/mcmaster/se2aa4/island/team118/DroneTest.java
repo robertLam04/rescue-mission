@@ -26,12 +26,12 @@ class DroneTest {
         //Normal case
         testDrone.updateBattery(5);
         assertEquals(95,testDrone.getBattery());
-        /*Erroneous case
+        //Erroneous case
         testDrone.updateBattery(-11);
         assertEquals(95-11,testDrone.getBattery());
         //Extreme case
         testDrone.updateBattery(101);
-        assertEquals(0,testDrone.getBattery());*/
+        assertEquals(0,testDrone.getBattery());
 
 
     }
