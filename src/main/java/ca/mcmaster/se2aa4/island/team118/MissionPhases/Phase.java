@@ -1,4 +1,4 @@
-package ca.mcmaster.se2aa4.island.team118;
+package ca.mcmaster.se2aa4.island.team118.MissionPhases;
 
 import org.json.JSONObject;
 

@@ -1,4 +1,4 @@
-package ca.mcmaster.se2aa4.island.team118;
+package ca.mcmaster.se2aa4.island.team118.Controllers;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
