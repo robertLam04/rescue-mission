@@ -9,6 +9,9 @@ import eu.ace_design.island.bot.IExplorerRaid;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import ca.mcmaster.se2aa4.island.team118.Controllers.Controller;
+import ca.mcmaster.se2aa4.island.team118.Controllers.MidController;
+
 public class Explorer implements IExplorerRaid {
 
     private final Logger logger = LogManager.getLogger();

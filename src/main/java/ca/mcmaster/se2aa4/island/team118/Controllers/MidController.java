@@ -1,19 +1,23 @@
-package ca.mcmaster.se2aa4.island.team118;
+package ca.mcmaster.se2aa4.island.team118.Controllers;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
-import java.util.Queue;
-import java.util.LinkedList;
+
+import ca.mcmaster.se2aa4.island.team118.MissionPhases.*;
+import ca.mcmaster.se2aa4.island.team118.MissionPhases.ReturnHome;
+import ca.mcmaster.se2aa4.island.team118.*;
 
 public class MidController implements Controller {
     private final Logger logger = LogManager.getLogger();
     public JSONObject previous_decision;
+
     private Drone drone;
     private GameMap map;
     private Reader reader;
     private Phase phase;
     private Decision decision = new Decision();
+    private int POICount = 0;
 
     public MidController(Integer battery, Direction initial_direction) {
         drone = new Drone(battery, initial_direction);
@@ -24,11 +28,14 @@ public class MidController implements Controller {
     public String makeDecision() {
        
         if (((int)drone.distanceToStop() == 0)&&(drone.getBattery()<=7)){
-            return decision.stop().toString();
+            previous_decision = decision.stop();
+            return previous_decision.toString();
         } else if ((drone.distanceToStop() <= 10)&&(drone.getBattery() <= 15)) { 
-            return decision.stop().toString() ;
+            previous_decision = decision.stop();
+            return previous_decision.toString();
         } else if ((drone.distanceToStop() > 10)&&(drone.getBattery() <= 25)) {
-            return decision.stop().toString();
+            previous_decision = decision.stop();
+            return previous_decision.toString();
         }
 
         //If phase is final stop
@@ -66,28 +73,28 @@ public class MidController implements Controller {
                     case N:
                         map.putTile(new Position(drone.getLocation().moveY(range)), tile);
                         //Update the phase if the tile is ground
-                        if (tile.isGround && phase.getCurrentPhase().equals("FindGround")) {
+                        if (tile.isGround() && phase.getCurrentPhase().equals("FindGround")) {
                             phase = new FlyToGround(drone, echo_dir, range + 1);
                         }
                         break;
                     case E:
                         map.putTile(new Position(drone.getLocation().moveX(range)), tile);
                         //Update the phase if the tile is ground
-                        if (tile.isGround && phase.getCurrentPhase().equals("FindGround")) {
+                        if (tile.isGround() && phase.getCurrentPhase().equals("FindGround")) {
                             phase = new FlyToGround(drone, echo_dir, range + 1);
                         }
                         break;
                     case S:
                         map.putTile(new Position(drone.getLocation().moveY(-range)), tile);
                         //Update the phase if the tile is ground
-                        if (tile.isGround && phase.getCurrentPhase().equals("FindGround")) {
+                        if (tile.isGround() && phase.getCurrentPhase().equals("FindGround")) {
                             phase = new FlyToGround(drone, echo_dir, range + 1);
                         }
                         break;
                     case W:
                         map.putTile(new Position(drone.getLocation().moveX(-range)), tile);
                         //Update the phase if the tile is ground
-                        if (tile.isGround && phase.getCurrentPhase().equals("FindGround")) {
+                        if (tile.isGround() && phase.getCurrentPhase().equals("FindGround")) {
                             phase = new FlyToGround(drone, echo_dir, range + 1);
                         }
                         break;
@@ -99,7 +106,16 @@ public class MidController implements Controller {
                 tile = reader.scan();
                 map.putTile(drone.getLocation(),tile);
                 
-                phase = new ReturnHome();
+                //Switch to Explore ground phase if scan is called in FlyToGround phase
+                if (phase.getCurrentPhase().equals("FlyToGround")) {phase = new ExploreGround(drone);}
+                
+                //Switch to FindGround phase if scan is not a land tile
+                if (!tile.isLand()) {phase = new FindGround(drone);}
+
+                //Return home if a POI is found
+                if (tile.isPOI()) {POICount++;}
+                if (POICount == 10) {phase = new ReturnHome();}
+
 
                 break;
             case "fly":
@@ -123,6 +139,8 @@ public class MidController implements Controller {
             default:
                 throw new IllegalArgumentException();
         }
-        map.printMap();
+        logger.info(phase.getCurrentPhase());
+        logger.info(POICount);
+
     }
 }

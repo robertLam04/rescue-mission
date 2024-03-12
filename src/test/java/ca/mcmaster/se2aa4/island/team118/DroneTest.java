@@ -33,7 +33,6 @@ class DroneTest {
         testDrone.updateBattery(101);
         assertEquals(0,testDrone.getBattery());
 
-
     }
 
     @Test

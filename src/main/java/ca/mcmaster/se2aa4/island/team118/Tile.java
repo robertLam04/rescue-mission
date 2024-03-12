@@ -1,14 +1,20 @@
 package ca.mcmaster.se2aa4.island.team118;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.json.JSONArray;
 
 public class Tile {
 
-    boolean isBorder;
-    boolean isSite;
-    boolean isCreek;
-    boolean isGround;
-    JSONArray biomes;
+    private boolean isBorder;
+    private boolean isSite;
+    private boolean isCreek;
+    private boolean isGround;
+    private JSONArray biomes;
+
+    /* Might want to refactor this to be immutable at some point */
+
 
     public Tile(boolean isBorder, boolean isSite, boolean isCreek, boolean isGround, JSONArray biomes) {
         this.isBorder = isBorder;
@@ -40,6 +46,19 @@ public class Tile {
 
     public void addbiomes(JSONArray biomes){
         this.biomes = biomes;
+    }
+
+    public boolean isGround() {
+        return this.isGround;
+    }
+
+    public boolean isLand() {
+        if (biomes.length() == 1 & biomes.get(0).equals("OCEAN")) {return false;}
+        return true;
+    }
+
+    public boolean isPOI() {
+        return isCreek || isSite;
     }
 
     @Override

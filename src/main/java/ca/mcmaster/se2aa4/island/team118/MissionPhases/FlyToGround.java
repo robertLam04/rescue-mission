@@ -1,5 +1,6 @@
-package ca.mcmaster.se2aa4.island.team118;
+package ca.mcmaster.se2aa4.island.team118.MissionPhases;
 
+import ca.mcmaster.se2aa4.island.team118.*;
 import java.util.LinkedList;
 import java.util.Queue;
 import org.json.JSONObject;
