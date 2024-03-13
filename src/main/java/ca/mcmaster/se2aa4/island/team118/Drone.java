@@ -14,7 +14,7 @@ public class Drone {
     }
     public void updateBattery(Integer cost){
         // updates the drone battery level based on most recent action's cost
-        cost = Math.abs(cost);
+        cost = Math.abs(cost); 
         this.battery -= cost;
         if (this.battery < 0 ){
             this.battery = 0;
