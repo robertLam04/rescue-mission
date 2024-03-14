@@ -19,7 +19,7 @@ public class GameMap {
     }
 
     //make seperate tile update method
-    public void putTile(Position position, Tile tile, Direction heading) {
+    public void putTile(Position position, Tile tile) {
         if (this.tileMap.get(position) == null){
             tileMap.put(position, tile);
         } else {
@@ -30,7 +30,6 @@ public class GameMap {
             tileMap.put(position, tile);
         }
     }
-
 
     public void printMap() {
         for (Map.Entry<Position, Tile> entry : tileMap.entrySet()) {
