@@ -58,8 +58,8 @@ public class JsonReader implements Reader{
         logger.info(site.length());
         
         Tile tile = new Tile();
-        tile.addIsSite(!(site.isEmpty()));
-        tile.addIsCreek(!(creek.isEmpty()));
+        tile.addSites(site);
+        tile.addCreeks(creek);
         tile.addbiomes(biomes);
         return tile;   
     }
