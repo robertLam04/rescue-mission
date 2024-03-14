@@ -5,7 +5,6 @@ import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 
 import ca.mcmaster.se2aa4.island.team118.MissionPhases.*;
-import ca.mcmaster.se2aa4.island.team118.MissionPhases.ReturnHome;
 import ca.mcmaster.se2aa4.island.team118.*;
 
 public class MidController implements Controller {
@@ -13,7 +12,7 @@ public class MidController implements Controller {
     public JSONObject previous_decision;
 
     private Drone drone;
-    private GameMap map;
+    public GameMap map;
     private Reader reader;
     private Phase phase;
     private Decision decision = new Decision();
@@ -37,12 +36,25 @@ public class MidController implements Controller {
             previous_decision = decision.stop();
             return previous_decision.toString();
         }
+        
+        try{
+            if (map.getTile(drone.potentialFly()).getIsBorder()&& !phase.getCurrentPhase().equals("Danger")){
+                phase = new Danger(drone);
+            }
+            if (map.getTile(drone.potentialDoubleFly()).getIsBorder()){
+                phase = new Danger(drone);
+            }
+        }catch (NullPointerException e){
+            logger.info(e);
+        }
 
         //If phase is final stop
         if (phase.isFinal()) {
             previous_decision = decision.stop();
             return decision.stop().toString();
         }
+
+        
 
         previous_decision = phase.getNextDecision();
         return previous_decision.toString();
@@ -69,30 +81,33 @@ public class MidController implements Controller {
                 String direction = params.getString("direction");
                 Direction echo_dir = Direction.fromString(direction);
                 //Technical Debt - Violates Law of demeter, digging into drone object to get Position
+                if (phase.getCurrentPhase().equals("Danger")){
+                    phase = new FindGround(drone);
+                }
                 switch(echo_dir.getHeading()) {
                     case N:
-                        map.putTile(new Position(drone.getLocation().moveY(range)), tile);
+                        map.putTile(new Position(drone.getLocation().moveY(range)), tile, drone.getDroneHeading());
                         //Update the phase if the tile is ground
                         if (tile.isGround() && phase.getCurrentPhase().equals("FindGround")) {
                             phase = new FlyToGround(drone, echo_dir, range + 1);
                         }
                         break;
                     case E:
-                        map.putTile(new Position(drone.getLocation().moveX(range)), tile);
+                        map.putTile(new Position(drone.getLocation().moveX(range)), tile, drone.getDroneHeading());
                         //Update the phase if the tile is ground
                         if (tile.isGround() && phase.getCurrentPhase().equals("FindGround")) {
                             phase = new FlyToGround(drone, echo_dir, range + 1);
                         }
                         break;
                     case S:
-                        map.putTile(new Position(drone.getLocation().moveY(-range)), tile);
+                        map.putTile(new Position(drone.getLocation().moveY(-range)), tile, drone.getDroneHeading());
                         //Update the phase if the tile is ground
                         if (tile.isGround() && phase.getCurrentPhase().equals("FindGround")) {
                             phase = new FlyToGround(drone, echo_dir, range + 1);
                         }
                         break;
                     case W:
-                        map.putTile(new Position(drone.getLocation().moveX(-range)), tile);
+                        map.putTile(new Position(drone.getLocation().moveX(-range)), tile, drone.getDroneHeading());
                         //Update the phase if the tile is ground
                         if (tile.isGround() && phase.getCurrentPhase().equals("FindGround")) {
                             phase = new FlyToGround(drone, echo_dir, range + 1);
@@ -104,7 +119,7 @@ public class MidController implements Controller {
                 break;
             case "scan":
                 tile = reader.scan();
-                map.putTile(drone.getLocation(),tile);
+                map.putTile(drone.getLocation(),tile, drone.getDroneHeading());
                 
                 //Switch to Explore ground phase if scan is called in FlyToGround phase
                 if (phase.getCurrentPhase().equals("FlyToGround")) {phase = new ExploreGround(drone);}
@@ -114,7 +129,7 @@ public class MidController implements Controller {
 
                 //Return home if a POI is found
                 if (tile.isPOI()) {POICount++;}
-                if (POICount == 10) {phase = new ReturnHome();}
+                if (POICount == Integer.MAX_VALUE) {phase = new ReturnHome();}
 
                 break;
             case "fly":
@@ -123,7 +138,7 @@ public class MidController implements Controller {
                 //Create an unknown (empty) tile
                 tile = new Tile();
                 //Add the tile to the map at the drones position
-                map.putTile(drone.getLocation(), tile);
+                map.putTile(drone.getLocation(), tile, drone.getDroneHeading());
                 break;
             case "heading":
                 //Get the direction of the turn
@@ -133,12 +148,13 @@ public class MidController implements Controller {
                 //Create an unknown (empty) tile
                 tile = new Tile();
                 //Add the tile to the map at the drone position
-                map.putTile(drone.getLocation(), tile);
+                map.putTile(drone.getLocation(), tile,drone.getDroneHeading());
                 break;
             default:
                 throw new IllegalArgumentException();
         }
         logger.info(phase.getCurrentPhase());
+        logger.info(drone.getLocation().toString());
         logger.info(POICount);
         map.printCreeks();
     }
