@@ -8,18 +8,18 @@ import org.json.JSONArray;
 public class Tile {
 
     private boolean isBorder;
-    private boolean isSite;
-    private boolean isCreek;
     private boolean isGround;
+    private JSONArray sites;
+    private JSONArray creeks;
     private JSONArray biomes;
 
     /* Might want to refactor this to be immutable at some point */
 
 
-    public Tile(boolean isBorder, boolean isSite, boolean isCreek, boolean isGround, JSONArray biomes) {
+    public Tile(boolean isBorder, JSONArray sites, JSONArray creeks, boolean isGround, JSONArray biomes) {
         this.isBorder = isBorder;
-        this.isSite = isSite;
-        this.isCreek = isCreek;
+        this.sites = sites;
+        this.creeks = creeks;
         this.isGround = isGround;
         this.biomes = biomes;
     }
@@ -32,12 +32,12 @@ public class Tile {
         this.isBorder = Border;
     }
 
-    public void addIsSite(boolean Site){
-        this.isSite = Site;
+    public void addSites(JSONArray sites){
+        this.sites = sites;
     }
 
-    public void addIsCreek(boolean Creek){
-        this.isCreek = Creek;
+    public void addCreeks(JSONArray creeks){
+        this.creeks = creeks;
     }
 
     public void addIsGround(boolean Ground){
@@ -58,15 +58,15 @@ public class Tile {
     }
 
     public boolean isPOI() {
-        return isCreek || isSite;
+        return !creeks.isEmpty() || !sites.isEmpty();
     }
 
     @Override
     public String toString() {
         return "Tile{" +
             "isBorder=" + (this.isBorder ? "true" : "false") +
-            ", isSite=" + (this.isSite ? "true" : "false") +
-            ", isCreek=" + (this.isCreek ? "true" : "false") +
+            ", isSite=" + (this.sites != null ? this.sites.toString() : "null") +
+            ", isCreek=" + (this.creeks != null ? this.creeks.toString() : "null") +
             ", isGround=" + (this.isGround ? "true" : "false") +
             ", biomes=" + (this.biomes != null ? this.biomes.toString() : "null") +
             '}';
