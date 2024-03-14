@@ -156,5 +156,6 @@ public class MidController implements Controller {
         logger.info(phase.getCurrentPhase());
         logger.info(drone.getLocation().toString());
         logger.info(POICount);
+        map.printCreeks();
     }
 }
