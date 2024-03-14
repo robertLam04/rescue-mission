@@ -71,6 +71,37 @@ public class Drone {
                 throw new IllegalArgumentException();
        }
     }
+
+    public Position potentialFly(){
+        switch (heading) {
+            case N:
+                return new Position(location.getX(),location.getY()+1);
+            case E:
+                return new Position(location.getX()+1,location.getY());
+            case S:
+                return new Position(location.getX(),location.getY()-1);
+            case W:
+            return new Position(location.getX()-1,location.getY());
+            default:
+                throw new IllegalArgumentException();
+       }
+    }
+
+    public Position potentialDoubleFly(){
+        switch (heading) {
+            case N:
+                return new Position(location.getX(),location.getY()+2);
+            case E:
+                return new Position(location.getX()+2,location.getY());
+            case S:
+                return new Position(location.getX(),location.getY()-2);
+            case W:
+            return new Position(location.getX()-2,location.getY());
+            default:
+                throw new IllegalArgumentException();
+       }
+    }
+
     public void heading(Direction turningDirection){
         switch (this.heading.getHeading()) {
             case N:

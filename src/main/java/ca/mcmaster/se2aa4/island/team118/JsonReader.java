@@ -39,6 +39,7 @@ public class JsonReader implements Reader{
     public Tile echo() {
         //record radars
         Tile tile = new Tile();
+        logger.info(extraInfo.getString("found"));
         if ("OUT_OF_RANGE".equals(extraInfo.getString("found"))) {
             //Create a tile range - 1 tiles away in the direction that is a border
             tile.addIsBorder(true);

@@ -32,6 +32,10 @@ public class Tile {
         this.isBorder = Border;
     }
 
+
+    public boolean getIsBorder(){
+        return this.isBorder;
+    }
     public void addSites(JSONArray sites){
         this.sites = sites;
     }

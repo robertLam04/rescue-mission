@@ -1,5 +1,7 @@
 package ca.mcmaster.se2aa4.island.team118;
 
+import java.util.Objects;
+
 public class Position {
 
     private Integer x;
@@ -50,5 +52,19 @@ public class Position {
         Integer diff_y = this.y - second_pos.getY();
         return Math.sqrt((diff_x*diff_x) + (diff_y*diff_y));
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Position other = (Position) obj;
+        return x == other.x && y == other.y;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
+    }
+
 
 }
