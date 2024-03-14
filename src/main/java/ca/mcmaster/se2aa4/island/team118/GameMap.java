@@ -8,7 +8,6 @@ import org.apache.logging.log4j.Logger;
 public class GameMap {
     private final Logger logger = LogManager.getLogger();
     private HashMap<Position, Tile> tileMap;
-    private Position position;
 
     public GameMap() {
         this.tileMap = new HashMap<>();
@@ -30,4 +29,38 @@ public class GameMap {
             logger.info("Position: " + position.toString() + ", Tile: " + tile.toString());
         }
     }
+
+    //Returns the position of the emergency site, we don't care about the ID
+    public Position sitePosition() {
+        for (Map.Entry<Position, Tile> entry : tileMap.entrySet()) {
+            Position position = entry.getKey();
+            Tile tile = entry.getValue();
+            if (tile.isSite()) { 
+                return position;
+            }
+        }
+        throw new IllegalArgumentException();
+    }
+
+    public Map<Position, String> creekPositions() {
+        Map<Position, String> creeksMap = new HashMap<>();
+        for (Map.Entry<Position, Tile> entry : tileMap.entrySet()) {
+            Position position = entry.getKey();
+            Tile tile = entry.getValue();
+            if (tile.isCreek()) {
+                creeksMap.put(position, tile.getCreek());
+            }
+        }
+        return creeksMap;
+    }
+
+    public void printCreeks() {
+        Map<Position, String> creeksMap = creekPositions();
+        for (Map.Entry<Position, String> entry : creeksMap.entrySet()) {
+            Position position = entry.getKey();
+            String Id = entry.getValue();
+            logger.info("Position: " + position.toString() + ", ID: " + Id);
+        }
+    }
+
 }

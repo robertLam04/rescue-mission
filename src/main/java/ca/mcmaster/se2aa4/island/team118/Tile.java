@@ -61,6 +61,18 @@ public class Tile {
         return !creeks.isEmpty() || !sites.isEmpty();
     }
 
+    public boolean isSite() {
+        return !sites.isEmpty();
+    }
+
+    public boolean isCreek() {
+        return creeks != null && !creeks.isEmpty();
+    }
+
+    public String getCreek() {
+        return creeks.getString(0);
+    }
+
     @Override
     public String toString() {
         return "Tile{" +

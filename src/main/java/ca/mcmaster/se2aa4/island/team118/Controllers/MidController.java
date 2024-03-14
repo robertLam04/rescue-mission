@@ -140,5 +140,6 @@ public class MidController implements Controller {
         }
         logger.info(phase.getCurrentPhase());
         logger.info(POICount);
+        map.printCreeks();
     }
 }
