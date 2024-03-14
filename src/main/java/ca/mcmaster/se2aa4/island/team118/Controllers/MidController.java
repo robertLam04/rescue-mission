@@ -60,7 +60,7 @@ public class MidController implements Controller {
         return previous_decision.toString();
 
     }
-
+    
     public void acknowledge(JSONObject response) {
         reader = new JsonReader(response);
         logger.info(drone.getBattery());
@@ -130,7 +130,6 @@ public class MidController implements Controller {
                 //Return home if a POI is found
                 if (tile.isPOI()) {POICount++;}
                 if (POICount == Integer.MAX_VALUE) {phase = new ReturnHome();}
-
 
                 break;
             case "fly":
