@@ -63,6 +63,7 @@ class DroneTest {
 
     @Test
     void flyTest() {
+        logger.info("Starting Drone fly test");
         Drone testDrone = new Drone(this.battery,this.heading);
         testDrone.fly();
         Position location = testDrone.getLocation();
@@ -72,6 +73,7 @@ class DroneTest {
 
     @Test
     void headingTest() {
+        logger.info("Starting Drone heading test");
         Drone testDrone = new Drone(this.battery,this.heading);
         testDrone.heading(Direction.N);
         Position location = testDrone.getLocation();
