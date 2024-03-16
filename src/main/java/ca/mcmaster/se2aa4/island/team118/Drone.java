@@ -103,46 +103,46 @@ public class Drone {
     }
 
     public void heading(Direction turningDirection){
-        switch (this.heading.getHeading()) {
+        switch (this.heading) {
             case N:
-                if (this.heading.left() == turningDirection.getHeading()){
+                if (this.heading.left() == turningDirection){
                     location.moveY(1);
                     location.moveX(-1);
                     this.heading = turningDirection;
-                } else if (this.heading.right() == turningDirection.getHeading()) {
+                } else if (this.heading.right() == turningDirection) {
                     location.moveY(1);
                     location.moveX(1);
                     this.heading = turningDirection;
                 }
                 break;
             case E:
-                if (this.heading.left() == turningDirection.getHeading()){
+                if (this.heading.left() == turningDirection){
                     location.moveY(1);
                     location.moveX(1);
                     this.heading = turningDirection;
-                } else if (this.heading.right() == turningDirection.getHeading()) {
+                } else if (this.heading.right() == turningDirection) {
                     location.moveY(-1);
                     location.moveX(1);
                     this.heading = turningDirection;
                 }
                 break;
             case S:
-                if (this.heading.left() == turningDirection.getHeading()){
+                if (this.heading.left() == turningDirection){
                     location.moveY(-1);
                     location.moveX(1);
                     this.heading = turningDirection;
-                } else if (this.heading.right() == turningDirection.getHeading()) {
+                } else if (this.heading.right() == turningDirection) {
                     location.moveY(-1);
                     location.moveX(-1);
                     this.heading = turningDirection;
                 }
                 break;
             case W:
-                if (this.heading.left() == turningDirection.getHeading()){
+                if (this.heading.left() == turningDirection){
                     location.moveY(-1);
                     location.moveX(-1);
                     this.heading = turningDirection;
-                } else if (this.heading.right() == turningDirection.getHeading()) {
+                } else if (this.heading.right() == turningDirection) {
                     location.moveY(1);
                     location.moveX(-1);
                     this.heading = turningDirection;

@@ -1,10 +1,14 @@
 package ca.mcmaster.se2aa4.island.team118.Controllers;
 
+import java.util.Map;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 
 import ca.mcmaster.se2aa4.island.team118.MissionPhases.*;
+import ca.mcmaster.se2aa4.island.team118.MissionPhases.FlyToGround;
+import ca.mcmaster.se2aa4.island.team118.MissionPhases.ReturnHome;
 import ca.mcmaster.se2aa4.island.team118.*;
 
 public class MidController implements Controller {
@@ -154,6 +158,17 @@ public class MidController implements Controller {
         logger.info(phase.getCurrentPhase());
         logger.info(drone.getLocation().toString());
         logger.info(POICount);
-        map.printCreeks();
     }
+
+    public void printPOIS() {
+        Map<Position, String> creeksMap = map.creekPositions();
+        Position sitePosition = map.sitePosition();
+        for (Map.Entry<Position, String> entry : creeksMap.entrySet()) {
+            Position position = entry.getKey();
+            String Id = entry.getValue();
+            logger.info("Position: " + position.toString() + ", ID: " + Id);
+        }
+        logger.info("Site:" + sitePosition.toString());
+    }
+
 }

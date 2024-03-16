@@ -66,7 +66,7 @@ public class Tile {
     }
 
     public boolean isSite() {
-        return !sites.isEmpty();
+        return sites != null && !sites.isEmpty();
     }
 
     public boolean isCreek() {
