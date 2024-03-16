@@ -49,12 +49,7 @@ public class Explorer implements IExplorerRaid {
     @Override
     public String deliverFinalReport() {
         ((MidController) midController).printPOIS();
-        return "no creek found";
-    }
-
-    public enum Biome {
-        UNKNOWN,
-        LAKE;
+        return midController.closestCreek();
     }
 
 }

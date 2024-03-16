@@ -5,19 +5,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 
-import ca.mcmaster.se2aa4.island.team118.Position;
-import ca.mcmaster.se2aa4.island.team118.Direction;
-import ca.mcmaster.se2aa4.island.team118.Drone;
-import ca.mcmaster.se2aa4.island.team118.GameMap;
-import ca.mcmaster.se2aa4.island.team118.JsonReader;
-import ca.mcmaster.se2aa4.island.team118.Maneuver;
-import ca.mcmaster.se2aa4.island.team118.Reader;
-import ca.mcmaster.se2aa4.island.team118.Tile;
-import ca.mcmaster.se2aa4.island.team118.MissionPhases.ExploreGround;
-import ca.mcmaster.se2aa4.island.team118.MissionPhases.FindGround;
-import ca.mcmaster.se2aa4.island.team118.MissionPhases.FlyToGround;
-import ca.mcmaster.se2aa4.island.team118.MissionPhases.Phase;
-import ca.mcmaster.se2aa4.island.team118.MissionPhases.ReturnHome;
+import ca.mcmaster.se2aa4.island.team118.*;
+import ca.mcmaster.se2aa4.island.team118.MissionPhases.*;
 
 public class StupidController implements Controller {
 
@@ -145,4 +134,8 @@ public class StupidController implements Controller {
         logger.info(drone.getDroneHeading().toString());
     }
     
+    public String closestCreek() {
+        return "Not found";
+    }
+
 }
