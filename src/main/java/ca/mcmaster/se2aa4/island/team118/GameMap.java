@@ -1,6 +1,7 @@
 package ca.mcmaster.se2aa4.island.team118;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -48,8 +49,7 @@ public class GameMap {
                 return position;
             }
         }
-        //If there are no sites return default value
-        return new Position(-1000,-1000);
+        throw new NoSuchElementException("Emergency site not found");
     }
 
     public Map<Position, String> creekPositions() {

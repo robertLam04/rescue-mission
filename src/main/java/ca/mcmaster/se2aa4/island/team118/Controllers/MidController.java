@@ -1,14 +1,16 @@
 package ca.mcmaster.se2aa4.island.team118.Controllers;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Random;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 
 import ca.mcmaster.se2aa4.island.team118.MissionPhases.*;
-import ca.mcmaster.se2aa4.island.team118.MissionPhases.FlyToGround;
-import ca.mcmaster.se2aa4.island.team118.MissionPhases.ReturnHome;
 import ca.mcmaster.se2aa4.island.team118.*;
 
 public class MidController implements Controller {
@@ -28,6 +30,7 @@ public class MidController implements Controller {
         phase = new FindGround(drone);
     }
 
+    @Override
     public String makeDecision() {
        
         if (((int)drone.distanceToStop() == 0)&&(drone.getBattery()<=7)){
@@ -60,9 +63,9 @@ public class MidController implements Controller {
 
         previous_decision = phase.getNextDecision();
         return previous_decision.toString();
-
     }
     
+    @Override
     public void acknowledge(JSONObject response) {
         reader = new JsonReader(response);
         logger.info(drone.getBattery());
@@ -155,20 +158,66 @@ public class MidController implements Controller {
             default:
                 throw new IllegalArgumentException();
         }
-        logger.info(phase.getCurrentPhase());
-        logger.info(drone.getLocation().toString());
-        logger.info(POICount);
     }
 
-    public void printPOIS() {
-        Map<Position, String> creeksMap = map.creekPositions();
-        Position sitePosition = map.sitePosition();
-        for (Map.Entry<Position, String> entry : creeksMap.entrySet()) {
-            Position position = entry.getKey();
-            String Id = entry.getValue();
-            logger.info("Position: " + position.toString() + ", ID: " + Id);
+    @Override
+    public String closestCreek() {
+        try {
+            Map<Position, String> creeksMap = map.creekPositions();
+            Position sitePosition = map.sitePosition();
+            double closest_distance = Double.MAX_VALUE;
+            String closest_creek = "";
+            if (creeksMap.isEmpty()) {
+                return "No creeks found";
+            } else {
+                for (Map.Entry<Position, String> entry : creeksMap.entrySet()) {
+                    Position creekPosition = entry.getKey();
+                    String creekId = entry.getValue();
+                    double current_distance = sitePosition.distanceFrom(creekPosition);
+                    if (current_distance < closest_distance) {
+                        closest_distance = current_distance;
+                        closest_creek = creekId;
+                    }
+                }
+            }
+            logger.info("Closest creek: " + closest_creek);
+            return closest_creek;
+        } catch (NoSuchElementException e) {
+            String random_creek = getRandomCreekId();
+            logger.info(random_creek);
+            return random_creek;
         }
-        logger.info("Site:" + sitePosition.toString());
+    }
+
+    private String getRandomCreekId() {
+        Map<Position, String> creeksMap = map.creekPositions();
+        List<String> creekIds = new ArrayList<>(creeksMap.values());
+        Random random = new Random();
+        if (creeksMap.isEmpty()) {return "No creeks found";}
+        return creekIds.get(random.nextInt(creekIds.size()));
+    }
+
+    //Helper for testing (delete later)
+    public void printPOIS() {
+        try {
+            Map<Position, String> creeksMap = map.creekPositions();
+            Position sitePosition = map.sitePosition();
+            for (Map.Entry<Position, String> entry : creeksMap.entrySet()) {
+                Position position = entry.getKey();
+                String Id = entry.getValue();
+                logger.info("Creek Position: " + position.toString() + ", Creek ID: " + Id);
+            }
+            logger.info("Site Position: " + sitePosition.toString());
+        } catch (NoSuchElementException e) {
+            Map<Position, String> creeksMap = map.creekPositions();
+            for (Map.Entry<Position, String> entry : creeksMap.entrySet()) {
+                Position position = entry.getKey();
+                String Id = entry.getValue();
+                logger.info("Creek Position: " + position.toString() + ", Creek ID: " + Id);
+            }
+            logger.info("No emergency site found");
+        }
+        
     }
 
 }
