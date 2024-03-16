@@ -48,7 +48,8 @@ public class GameMap {
                 return position;
             }
         }
-        throw new IllegalArgumentException();
+        //If there are no sites return default value
+        return new Position(-1000,-1000);
     }
 
     public Map<Position, String> creekPositions() {
@@ -62,14 +63,4 @@ public class GameMap {
         }
         return creeksMap;
     }
-
-    public void printCreeks() {
-        Map<Position, String> creeksMap = creekPositions();
-        for (Map.Entry<Position, String> entry : creeksMap.entrySet()) {
-            Position position = entry.getKey();
-            String Id = entry.getValue();
-            logger.info("Position: " + position.toString() + ", ID: " + Id);
-        }
-    }
-
 }
