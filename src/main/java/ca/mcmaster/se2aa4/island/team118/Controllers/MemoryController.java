@@ -23,4 +23,8 @@ public class MemoryController implements Controller {
     public JSONObject previousDecision(){
         return previous_decision;
     }
+
+    public String closestCreek() {
+        return "Not found";
+    }
 }

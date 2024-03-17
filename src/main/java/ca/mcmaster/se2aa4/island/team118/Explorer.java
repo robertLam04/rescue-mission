@@ -49,6 +49,7 @@ public class Explorer implements IExplorerRaid {
 
     @Override
     public String deliverFinalReport() {
+
         ((GridSearchController) midController).printPOIS();
         return "no creek found";
     }

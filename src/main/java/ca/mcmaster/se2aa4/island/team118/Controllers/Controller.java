@@ -8,4 +8,6 @@ public interface Controller {
     
     public void acknowledge(JSONObject object);
 
+    public String closestCreek();
+
 } 
