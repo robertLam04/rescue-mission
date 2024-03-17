@@ -51,7 +51,7 @@ public class Explorer implements IExplorerRaid {
     public String deliverFinalReport() {
 
         ((GridSearchController) midController).printPOIS();
-        return "no creek found";
+        return midController.closestCreek();
     }
 
     public enum Biome {
