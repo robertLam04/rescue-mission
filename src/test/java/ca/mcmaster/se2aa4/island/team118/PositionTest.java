@@ -86,10 +86,10 @@ public class PositionTest {
         logger.info("Starting Position ToString test");
         Position position1 = new Position(x,y);
         Position position2 = new Position(altX,altY);
-        //Test genereate correct string for position 1
-        assertEquals("("+x+","+y+")",position1.toString());
-        //Test genereate correct string for position 1
-        assertEquals("("+altX+","+altY+")",position2.toString());
+        //Test generate correct string for position 1
+        assertEquals("(0, 0)",position1.toString());
+        //Test generate correct string for position 1
+        assertEquals("(12, -12)",position2.toString());
     }
 
     @Test
