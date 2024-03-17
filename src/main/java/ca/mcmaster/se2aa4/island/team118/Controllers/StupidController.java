@@ -24,7 +24,7 @@ public class StupidController implements Controller {
         drone = new Drone(battery, initial_direction);
         map = new GameMap();
         phase = new FindGround(drone);
-        decisionQueue = maneuvers.shiftLeft(drone.getDroneHeading());
+        decisionQueue = maneuvers.spiral(drone.getDroneHeading(), 1);
     }
 
     public String makeDecision() {
@@ -34,7 +34,7 @@ public class StupidController implements Controller {
         } else {
             previous_decision = decision.put("action", "stop");
         }
-        logger.info("** Decision: {}",decision.toString());
+        logger.info("** Decision: {}", decision.toString());
         return previous_decision.toString();
     }
 
