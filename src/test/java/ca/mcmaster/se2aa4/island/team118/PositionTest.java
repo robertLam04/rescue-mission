@@ -65,7 +65,7 @@ public class PositionTest {
     }
 
     @Test
-    @DisplayName("Testing method to set specific x coordinate")
+    @DisplayName("Testing method to set specific y coordinate")
     void setYTest() {
         logger.info("Starting Position setY test");
         Position testPosition = new Position(x,y);

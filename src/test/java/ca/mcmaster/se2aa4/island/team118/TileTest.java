@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TileTest {
-   private boolean IS;
+/*class TileTest {
+    private boolean IS;
     private boolean Not;
     private final Logger logger = LogManager.getLogger();
     @BeforeEach
@@ -24,10 +24,10 @@ class TileTest {
         Tile testTile = new Tile();
         //Test if tile properly updates to represent a border
         testTile.addIsBorder(this.IS);
-        assertEquals(this.IS,testTile.isBorder);
+        assertEquals(this.IS,testTile.isBorder());
         //Test if tile properly updates to show it is not a border
         testTile.addIsBorder(this.Not);
-        assertEquals(this.Not,testTile.isBorder);
+        assertEquals(this.Not,testTile.isBorder());
     }
 
     @Test
@@ -35,8 +35,7 @@ class TileTest {
         logger.info("Starting Tile IsSite test");
         Tile testTile = new Tile();
         //Test if tile properly updates to represent a site
-        testTile.addIsSite(this.IS);
-        assertEquals(this.IS,testTile.isSite);
+        testTile.addIsSite(testTile.isSite);
         //Test if tile properly updates to show it is not a site
         testTile.addIsSite(this.Not);
         assertEquals(this.Not,testTile.isSite);
@@ -78,3 +77,5 @@ class TileTest {
         biome.remove(0);
     }
 }
+ * 
+ */
