@@ -3,6 +3,7 @@ package ca.mcmaster.se2aa4.island.team118;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,10 +16,11 @@ class DroneTest {
     void setUp() {
         this.battery = 100;
         this.heading = Direction.E;
+
     }
 
     @Test
-    //Checks normal, extreme and erroneous cases of battery consumption for correctness
+    @DisplayName("Testing method to update Drone battery")
     void updateBatteryTest() {
         logger.info("Starting Drone updatebattery test");
 
@@ -36,6 +38,7 @@ class DroneTest {
     }
 
     @Test
+    @DisplayName("Testing method to update Drone status")
     void updateStatusTest() {
         logger.info("Starting Drone updateStatus method");
         //Test that correct status is generated upon start up
@@ -47,6 +50,7 @@ class DroneTest {
     }
 
     @Test
+    @DisplayName("Testing method to calculate Drone's distance to base")
     void distanceToStopTest() {
         logger.info("Starting Drone distanceToStop method");
         //Ensure Drone Starts in correct location and distanceToStop works at base location
@@ -61,7 +65,9 @@ class DroneTest {
     }
 
     @Test
+    @DisplayName("Testing to Determine if Drone flies properly")
     void flyTest() {
+        logger.info("Starting Drone fly test");
         Drone testDrone = new Drone(this.battery,this.heading);
         testDrone.fly();
         Position location = testDrone.getLocation();
@@ -70,7 +76,9 @@ class DroneTest {
     }
 
     @Test
+    @DisplayName("Testing to Ensure Drone turns properly")
     void headingTest() {
+        logger.info("Starting Drone heading test");
         Drone testDrone = new Drone(this.battery,this.heading);
         testDrone.heading(Direction.N);
         Position location = testDrone.getLocation();
