@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import ca.mcmaster.se2aa4.island.team118.Controllers.Controller;
+import ca.mcmaster.se2aa4.island.team118.Controllers.GridSearchController;
 import ca.mcmaster.se2aa4.island.team118.Controllers.MidController;
 import ca.mcmaster.se2aa4.island.team118.Controllers.StupidController;
 
@@ -30,7 +31,7 @@ public class Explorer implements IExplorerRaid {
         logger.info("The drone is facing {}", direction);
         logger.info("Battery level is {}", batteryLevel);
 
-        midController = new MidController(batteryLevel, initial_heading);
+        midController = new GridSearchController(batteryLevel, initial_heading);
 
     }
 
@@ -48,7 +49,7 @@ public class Explorer implements IExplorerRaid {
 
     @Override
     public String deliverFinalReport() {
-        ((MidController) midController).printPOIS();
+        ((GridSearchController) midController).printPOIS();
         return "no creek found";
     }
 
