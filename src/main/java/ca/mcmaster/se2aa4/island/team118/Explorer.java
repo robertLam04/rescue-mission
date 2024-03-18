@@ -31,7 +31,7 @@ public class Explorer implements IExplorerRaid {
         logger.info("The drone is facing {}", direction);
         logger.info("Battery level is {}", batteryLevel);
 
-        midController = new GridSearchController(batteryLevel, initial_heading);
+        midController = new MidController(batteryLevel, initial_heading);
 
     }
 
@@ -50,7 +50,7 @@ public class Explorer implements IExplorerRaid {
     @Override
     public String deliverFinalReport() {
 
-        ((GridSearchController) midController).printPOIS();
+        ((MidController) midController).printPOIS();
         return midController.closestCreek();
     }
 
