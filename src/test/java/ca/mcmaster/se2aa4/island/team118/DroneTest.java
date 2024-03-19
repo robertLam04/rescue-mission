@@ -38,18 +38,6 @@ class DroneTest {
     }
 
     @Test
-    @DisplayName("Testing method to update Drone status")
-    void updateStatusTest() {
-        logger.info("Starting Drone updateStatus method");
-        //Test that correct status is generated upon start up
-        Drone testDrone = new Drone(this.battery,this.heading);
-        assertSame(testDrone.getStatus(), Condition.Working );
-        //Confirm that status is updated appropriately
-        testDrone.updateStatus(Condition.MIA);
-        assertSame(Condition.MIA,testDrone.getStatus());
-    }
-
-    @Test
     @DisplayName("Testing method to calculate Drone's distance to base")
     void distanceToStopTest() {
         logger.info("Starting Drone distanceToStop method");
@@ -83,12 +71,12 @@ class DroneTest {
         testDrone.heading(Direction.N);
         Position location = testDrone.getLocation();
         //Test Right Turn (should turn with momentum)
-        assertSame(testDrone.getDroneHeading(),Direction.N);
+        assertSame(testDrone.getHeading(),Direction.N);
         assertEquals(location.toString(),new Position(1,1).toString());
         //Test Left Turn
         testDrone.heading(this.heading);
         location = testDrone.getLocation();
-        assertSame(testDrone.getDroneHeading(),Direction.E);
+        assertSame(testDrone.getHeading(),Direction.E);
         assertEquals(location.toString(),new Position(2,2).toString());
     }
 }

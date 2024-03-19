@@ -45,16 +45,16 @@ public class Uturn implements Phase {
     public Queue<JSONObject> UturnQ(){
         Queue<JSONObject> uturnQueue;
         if (isLeft){
-            uturnQueue = maneuver.uturnLeft(drone.getDroneHeading());
+            uturnQueue = maneuver.uturnLeft(drone.getHeading());
 
         } else {
-            uturnQueue = maneuver.uturnRight(drone.getDroneHeading());
+            uturnQueue = maneuver.uturnRight(drone.getHeading());
         }
         while (!uturnQueue.isEmpty()){
             decision_queue.add(uturnQueue.remove());
         }
         decision_queue.add(decision.scan());
-        decision_queue.add(decision.echo(drone.getDroneHeading().right().right()));
+        decision_queue.add(decision.echo(drone.getHeading().right().right()));
 
         return decision_queue;
     }

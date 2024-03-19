@@ -29,13 +29,6 @@ public class JsonReader implements Reader{
         drone.updateBattery(cost);
     }
 
-    public void updateStatus(Drone drone) {
-        //record MIA status
-        if (status == "MIA") {
-            drone.updateStatus(Condition.MIA);
-        }
-    }
-
     public Tile echo() {
         //record radars
         Tile tile = new Tile();

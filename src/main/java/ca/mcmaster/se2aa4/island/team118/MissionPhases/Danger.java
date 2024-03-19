@@ -36,10 +36,10 @@ public class Danger implements Phase{
     }
 
     private Queue<JSONObject> dangerQ() {
-        decision_queue.add(decision.heading(drone.getDroneHeading().right()));
+        decision_queue.add(decision.heading(drone.getHeading().right()));
         //make getHeading.180
-        decision_queue.add(decision.heading(drone.getDroneHeading().right().right()));
-        decision_queue.add(decision.echo(drone.getDroneHeading().right().right()));
+        decision_queue.add(decision.heading(drone.getHeading().right().right()));
+        decision_queue.add(decision.echo(drone.getHeading().right().right()));
 
 
         return decision_queue;

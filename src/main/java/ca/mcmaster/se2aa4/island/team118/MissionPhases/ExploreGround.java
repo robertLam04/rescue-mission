@@ -35,7 +35,6 @@ public class ExploreGround implements Phase {
         decision_queue.add(decision.fly());
         decision_queue.add(decision.scan());
 
-
         return decision_queue;
     }
 

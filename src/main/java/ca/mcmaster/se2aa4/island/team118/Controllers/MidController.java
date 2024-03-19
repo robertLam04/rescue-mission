@@ -71,7 +71,6 @@ public class MidController implements Controller {
         logger.info(drone.getBattery());
         reader.updateBattery(drone);
         logger.info(drone.getBattery());
-        reader.updateStatus(drone);
 
         Tile tile;
 

@@ -42,10 +42,10 @@ public class FlyToUturn implements Phase {
 
     public Queue<JSONObject> FlyToUturnQ(){
         if (isLeft){
-            decision_queue.add(decision.echo(drone.getDroneHeading().left()));
+            decision_queue.add(decision.echo(drone.getHeading().left()));
             decision_queue.add(decision.fly());
-        }else {
-            decision_queue.add(decision.echo(drone.getDroneHeading().right()));
+        } else {
+            decision_queue.add(decision.echo(drone.getHeading().right()));
             decision_queue.add(decision.fly());
         }
         return decision_queue;
