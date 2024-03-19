@@ -90,7 +90,6 @@ public class GridSearchController implements Controller {
         logger.info(drone.getBattery());
         reader.updateBattery(drone);
         logger.info(drone.getBattery());
-        reader.updateStatus(drone);
 
         Tile tile;
 
@@ -185,7 +184,7 @@ public class GridSearchController implements Controller {
                 tile = reader.scan();
                 map.putTile(drone.getLocation(),tile);
                 
-                if (tile.isSite()){phase = new ReturnHome();}
+                //if (tile.isSite()){phase = new ReturnHome();}
 
                 //Switch to Explore ground phase if scan is called in FlyToGround phase
                 if (phase.getCurrentPhase().equals("FlyToGround")) {

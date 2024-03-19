@@ -31,9 +31,9 @@ public class FindGround implements Phase {
 
     private Queue<JSONObject> FindGroundQ() {
         //DO THESE ACTIONS IN SEQUENCE UNTIL GROUND IS FOUND ON RADAR
-        decision_queue.add(decision.echo(drone.getDroneHeading()));
-        decision_queue.add(decision.echo(drone.getDroneHeading().left()));
-        decision_queue.add(decision.echo(drone.getDroneHeading().right()));
+        decision_queue.add(decision.echo(drone.getHeading()));
+        decision_queue.add(decision.echo(drone.getHeading().left()));
+        decision_queue.add(decision.echo(drone.getHeading().right()));
         decision_queue.add(decision.fly());
         decision_queue.add(decision.fly());
         decision_queue.add(decision.fly());
