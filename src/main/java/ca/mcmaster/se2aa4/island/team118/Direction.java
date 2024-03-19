@@ -53,9 +53,5 @@ public enum Direction {
        }
     }
 
-    public Direction getHeading(){
-        return this;
-    }
-    
 }
 

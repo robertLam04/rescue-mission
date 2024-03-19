@@ -108,7 +108,7 @@ public class GridSearchController implements Controller {
                 if (phase.getCurrentPhase().equals("Danger")){
                     phase = new FindGround(drone);
                 }
-                switch(echo_dir.getHeading()) {
+                switch(echo_dir) {
                     case N:
                         map.putTile(new Position(drone.getLocation().moveY(range)), tile);
                         //Update the phase if the tile is ground
