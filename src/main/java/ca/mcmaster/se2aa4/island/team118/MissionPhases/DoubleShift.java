@@ -43,14 +43,14 @@ public class DoubleShift implements Phase {
     public Queue<JSONObject> DoubleShiftQ(){
         Queue<JSONObject> doubleShiftQueue; 
         if (isLeft){
-            doubleShiftQueue = maneuver.shiftLeft2(drone.getDroneHeading());
+            doubleShiftQueue = maneuver.shiftLeft2(drone.getHeading());
         } else {
-            doubleShiftQueue = maneuver.shiftRight2(drone.getDroneHeading());
+            doubleShiftQueue = maneuver.shiftRight2(drone.getHeading());
         }
         while (!doubleShiftQueue.isEmpty()){
             decision_queue.add(doubleShiftQueue.remove());
         }
-        decision_queue.add(decision.echo(drone.getDroneHeading()));
+        decision_queue.add(decision.echo(drone.getHeading()));
         return decision_queue;
 
     }

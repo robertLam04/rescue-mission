@@ -17,6 +17,7 @@ public class Position {
         this.y = pos.getY();
     }
 
+    //Alternative to getters
     public Integer getX(){
         return this.x;
     }
@@ -35,6 +36,7 @@ public class Position {
         return this;
     }
 
+    //Remove setters?
     public void setX(Integer X){
         this.x = X;
     }

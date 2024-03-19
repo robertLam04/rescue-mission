@@ -7,8 +7,6 @@ public interface Reader {
     public Tile echo();
 
     public Integer range();
-
-    public void updateStatus(Drone drone);
     
     public void updateBattery(Drone drone);
     

@@ -21,7 +21,7 @@ public class EchoAfterExplore implements Phase {
 
     @Override
     public JSONObject getNextDecision() {
-        return decision.echo(drone.getDroneHeading());
+        return decision.echo(drone.getHeading());
     }
 
     @Override

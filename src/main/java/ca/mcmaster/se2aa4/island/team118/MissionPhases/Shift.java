@@ -44,18 +44,15 @@ public class Shift implements Phase {
     public Queue<JSONObject> ShiftQ(){
         Queue<JSONObject> shiftQueue;
         if (isLeft){
-            shiftQueue = maneuver.shiftLeft(drone.getDroneHeading());
+            shiftQueue = maneuver.shiftLeft(drone.getHeading());
         } else {
-            shiftQueue = maneuver.shiftRight(drone.getDroneHeading());
+            shiftQueue = maneuver.shiftRight(drone.getHeading());
         }
         while (!shiftQueue.isEmpty()){
             decision_queue.add(shiftQueue.remove());
         }
-        decision_queue.add(decision.echo(drone.getDroneHeading()));
+        decision_queue.add(decision.echo(drone.getHeading()));
         return decision_queue;
 
     }
-
-
-    
 }

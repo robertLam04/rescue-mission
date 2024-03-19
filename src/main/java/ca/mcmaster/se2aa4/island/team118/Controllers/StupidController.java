@@ -24,7 +24,7 @@ public class StupidController implements Controller {
         drone = new Drone(battery, initial_direction);
         map = new GameMap();
         phase = new FindGround(drone);
-        decisionQueue = maneuvers.spiral(drone.getDroneHeading(), 1);
+        decisionQueue = maneuvers.spiral(drone.getHeading(), 1);
     }
 
     public String makeDecision() {
@@ -43,7 +43,6 @@ public class StupidController implements Controller {
         logger.info(drone.getBattery());
         reader.updateBattery(drone);
         logger.info(drone.getBattery());
-        reader.updateStatus(drone);
 
         Tile tile;
 
@@ -131,7 +130,7 @@ public class StupidController implements Controller {
                 throw new IllegalArgumentException();
         }
         logger.info(drone.getLocation().toString());
-        logger.info(drone.getDroneHeading().toString());
+        logger.info(drone.getHeading().toString());
     }
     
     public String closestCreek() {

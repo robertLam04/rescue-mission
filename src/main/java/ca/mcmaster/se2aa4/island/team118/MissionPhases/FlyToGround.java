@@ -25,11 +25,12 @@ public class FlyToGround implements Phase {
         return "FlyToGround";
     }
 
+    //Change so it just turns towards ground (EASY FIX JUST PUT direction_to_ground to turn)
     @Override
     public JSONObject getNextDecision() {
         //If drone is not facing ground turn right
-        if (!drone.getDroneHeading().equals(direction_to_ground)) {
-            return decision.heading(drone.getDroneHeading().right());
+        if (!drone.getHeading().equals(direction_to_ground)) {
+            return decision.heading(drone.getHeading().right());
         }
         //If queue is empty scan
         if (fly_queue.isEmpty()) {
