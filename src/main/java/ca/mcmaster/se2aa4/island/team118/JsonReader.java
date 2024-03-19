@@ -31,15 +31,17 @@ public class JsonReader implements Reader{
 
     public Tile echo() {
         //record radars
-        Tile tile = new Tile();
-        logger.info(extraInfo.getString("found"));
+        JSONArray site = new JSONArray();
+        JSONArray creek = new JSONArray();
+        JSONArray biomes = new JSONArray();
+
         if ("OUT_OF_RANGE".equals(extraInfo.getString("found"))) {
             //Create a tile range - 1 tiles away in the direction that is a border
-            tile.addIsBorder(true);
-        } else if ("GROUND".equals(extraInfo.getString("found")))  { 
-            //Create a tile range tiles away in the direction that is ground
-            tile.addIsGround(true);
+            Tile tile = new Tile(site, creek, false, biomes);
+            return tile;
         }
+        //Create a tile range tiles away in the direction that is ground
+        Tile tile = new Tile(site, creek, true, biomes);
         return tile;
     }
     
@@ -49,12 +51,11 @@ public class JsonReader implements Reader{
         JSONArray creek = extraInfo.getJSONArray("creeks");
         JSONArray biomes = extraInfo.getJSONArray("biomes");
 
-        logger.info(site.length());
-        
-        Tile tile = new Tile();
-        tile.addSites(site);
-        tile.addCreeks(creek);
-        tile.addbiomes(biomes);
+        if (biomes.length() == 1 & biomes.get(0).equals("OCEAN")) {
+            Tile tile = new Tile(site, creek, false, biomes);
+            return tile;
+        }
+        Tile tile = new Tile(site, creek, true, biomes);
         return tile;   
     }
 

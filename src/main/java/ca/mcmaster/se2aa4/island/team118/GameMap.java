@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class GameMap {
+
     private final Logger logger = LogManager.getLogger();
     private HashMap<Position, Tile> tileMap;
   
@@ -21,15 +22,15 @@ public class GameMap {
 
     //make seperate tile update method
     public void putTile(Position position, Tile tile) {
-        if (this.tileMap.get(position) == null){
+        /*
+         * if (this.tileMap.get(position) == null){
             tileMap.put(position, tile);
         } else {
-            if (tileMap.get(position).getIsBorder()){
-                tile.addIsBorder(true);
-            }
             tileMap.remove(position);
             tileMap.put(position, tile);
         }
+         */
+        tileMap.put(position, tile);
     }
 
     public void printMap() {

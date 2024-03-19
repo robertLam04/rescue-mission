@@ -189,14 +189,14 @@ public class GridSearchController implements Controller {
                 //Switch to Explore ground phase if scan is called in FlyToGround phase
                 if (phase.getCurrentPhase().equals("FlyToGround")) {
                     phase = new ExploreGround(drone);
-                } else if (phase.getCurrentPhase().equals("ExploreGround")&&!tile.isLand()){
+                } else if (phase.getCurrentPhase().equals("ExploreGround")&&!tile.isGround()){
                     phase = new EchoAfterExplore(drone);
-                }else if (phase.getCurrentPhase().equals("Uturn")&&tile.isLand()){
+                }else if (phase.getCurrentPhase().equals("Uturn")&&tile.isGround()){
                     phase = new ExploreGround(drone);
                 }
                 
                 //Switch to FindGround phase if scan is not a land tile
-                //if (!tile.isLand()) {phase = new FindGround(drone);}
+                //if (!tile.isGround()) {phase = new FindGround(drone);}
 
                 //Return home if a POI is found
                 if (tile.isPOI()) {POICount++;}
@@ -207,9 +207,7 @@ public class GridSearchController implements Controller {
                 //Update the drones position
                 drone.fly();
                 //Create an unknown (empty) tile
-                tile = new Tile();
                 //Add the tile to the map at the drones position
-                map.putTile(drone.getLocation(), tile);
                 break;
             case "heading":
                 //Get the direction of the turn
@@ -217,9 +215,7 @@ public class GridSearchController implements Controller {
                 //Update the drones position
                 drone.heading(turn_heading);
                 //Create an unknown (empty) tile
-                tile = new Tile();
                 //Add the tile to the map at the drone position
-                map.putTile(drone.getLocation(), tile);
                 break;
             default:
                 throw new IllegalArgumentException();
@@ -230,7 +226,7 @@ public class GridSearchController implements Controller {
         logger.info(POICount);
     }
 
-        @Override
+    @Override
     public String closestCreek() {
         try {
             Map<Position, String> creeksMap = map.creekPositions();
