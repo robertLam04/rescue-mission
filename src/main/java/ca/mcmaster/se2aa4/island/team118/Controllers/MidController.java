@@ -44,7 +44,8 @@ public class MidController implements Controller {
             return previous_decision.toString();
         }
         
-        try{
+        /*
+         * try{
             if (map.getTile(drone.potentialFly()).getIsBorder()&& !phase.getCurrentPhase().equals("Danger")){
                 phase = new Danger(drone);
             }
@@ -55,6 +56,8 @@ public class MidController implements Controller {
             logger.info(e);
         }
 
+         */
+        
         //If phase is final stop
         if (phase.isFinal()) {
             previous_decision = decision.stop();
@@ -129,7 +132,7 @@ public class MidController implements Controller {
                 if (phase.getCurrentPhase().equals("FlyToGround")) {phase = new ExploreGround(drone);}
                 
                 //Switch to FindGround phase if scan is not a land tile
-                if (!tile.isLand()) {phase = new FindGround(drone);}
+                if (!tile.isGround()) {phase = new FindGround(drone);}
 
                 //Return home if a POI is found
                 if (tile.isPOI()) {POICount++;}
@@ -139,20 +142,12 @@ public class MidController implements Controller {
             case "fly":
                 //Update the drones position
                 drone.fly();
-                //Create an unknown (empty) tile
-                tile = new Tile();
-                //Add the tile to the map at the drones position
-                map.putTile(drone.getLocation(), tile);
                 break;
             case "heading":
                 //Get the direction of the turn
                 Direction turn_heading = Direction.fromString(previous_decision.getJSONObject("parameters").getString("direction"));
                 //Update the drones position
                 drone.heading(turn_heading);
-                //Create an unknown (empty) tile
-                tile = new Tile();
-                //Add the tile to the map at the drone position
-                map.putTile(drone.getLocation(), tile);
                 break;
             default:
                 throw new IllegalArgumentException();

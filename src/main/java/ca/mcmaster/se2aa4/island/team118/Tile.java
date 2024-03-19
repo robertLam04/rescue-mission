@@ -15,40 +15,10 @@ public class Tile {
 
     /* Might want to refactor this to be immutable at some point */
 
-
-    public Tile(boolean isBorder, JSONArray sites, JSONArray creeks, boolean isGround, JSONArray biomes) {
-        this.isBorder = isBorder;
+    public Tile(JSONArray sites, JSONArray creeks, boolean isGround, JSONArray biomes) {
         this.sites = sites;
         this.creeks = creeks;
         this.isGround = isGround;
-        this.biomes = biomes;
-    }
-    
-    public Tile(){
-      
-    }
-    
-    public void addIsBorder(boolean Border){
-        this.isBorder = Border;
-    }
-
-
-    public boolean getIsBorder(){
-        return this.isBorder;
-    }
-    public void addSites(JSONArray sites){
-        this.sites = sites;
-    }
-
-    public void addCreeks(JSONArray creeks){
-        this.creeks = creeks;
-    }
-
-    public void addIsGround(boolean Ground){
-        this.isGround = Ground;
-    }
-
-    public void addbiomes(JSONArray biomes){
         this.biomes = biomes;
     }
 
@@ -56,14 +26,9 @@ public class Tile {
         return this.isGround;
     }
 
-    public boolean isLand() {
-        if (biomes.length() == 1 & biomes.get(0).equals("OCEAN")) {return false;}
-        return true;
-    }
-
     public boolean isPOI() {
         return !creeks.isEmpty() || !sites.isEmpty();
-    }
+    }   
 
     public boolean isSite() {
         return sites != null && !sites.isEmpty();
@@ -80,8 +45,7 @@ public class Tile {
     @Override
     public String toString() {
         return "Tile{" +
-            "isBorder=" + (this.isBorder ? "true" : "false") +
-            ", isSite=" + (this.sites != null ? this.sites.toString() : "null") +
+            "isSite=" + (this.sites != null ? this.sites.toString() : "null") +
             ", isCreek=" + (this.creeks != null ? this.creeks.toString() : "null") +
             ", isGround=" + (this.isGround ? "true" : "false") +
             ", biomes=" + (this.biomes != null ? this.biomes.toString() : "null") +
