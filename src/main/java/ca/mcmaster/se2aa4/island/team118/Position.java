@@ -26,23 +26,23 @@ public class Position {
         return this.y;
     }
 
-    public Position moveX(Integer X){
-        this.x = this.x + X;
-        return this;
-    }
-
-    public Position moveY(Integer Y){
-        this.y = this.y + Y;
-        return this;
-    }
-
-    //Remove setters?
-    public void setX(Integer X){
-        this.x = X;
-    }
-
-    public void setY(Integer Y){
-        this.y = Y;
+    public void move(Integer distance, Direction direction){
+        switch (direction) {
+            case N:
+                this.y += distance;
+                break;
+            case E:
+                this.x += distance;
+                break;
+            case S:
+                this.y -= distance;
+                break;
+            case W:
+                this.x -= distance;
+                break;
+            default:
+                throw new IllegalArgumentException();
+       }
     }
 
     public String toString() {

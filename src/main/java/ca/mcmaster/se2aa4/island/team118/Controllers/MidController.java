@@ -91,38 +91,14 @@ public class MidController implements Controller {
                 if (phase.getCurrentPhase().equals("Danger")){
                     phase = new FindGround(drone);
                 }
-                switch(echo_dir) {
-                    case N:
-                        map.putTile(new Position(drone.getLocation().moveY(range)), tile);
-                        //Update the phase if the tile is ground
-                        if (tile.isGround() && phase.getCurrentPhase().equals("FindGround")) {
-                            phase = new FlyToGround(drone, echo_dir, range + 1);
-                        }
-                        break;
-                    case E:
-                        map.putTile(new Position(drone.getLocation().moveX(range)), tile);
-                        //Update the phase if the tile is ground
-                        if (tile.isGround() && phase.getCurrentPhase().equals("FindGround")) {
-                            phase = new FlyToGround(drone, echo_dir, range + 1);
-                        }
-                        break;
-                    case S:
-                        map.putTile(new Position(drone.getLocation().moveY(-range)), tile);
-                        //Update the phase if the tile is ground
-                        if (tile.isGround() && phase.getCurrentPhase().equals("FindGround")) {
-                            phase = new FlyToGround(drone, echo_dir, range + 1);
-                        }
-                        break;
-                    case W:
-                        map.putTile(new Position(drone.getLocation().moveX(-range)), tile);
-                        //Update the phase if the tile is ground
-                        if (tile.isGround() && phase.getCurrentPhase().equals("FindGround")) {
-                            phase = new FlyToGround(drone, echo_dir, range + 1);
-                        }
-                        break;
-                    default:
-                        throw new IllegalArgumentException();
+                Position tile_position = new Position(drone.getLocation().getX(),drone.getLocation().getY());
+                tile_position.move(range, echo_dir);
+                map.putTile(tile_position, tile);
+                //Update the phase if the tile is ground
+                if (tile.isGround() && phase.getCurrentPhase().equals("FindGround")) {
+                    phase = new FlyToGround(drone, echo_dir, range + 1);
                 }
+                        
                 break;
             case "scan":
                 tile = reader.scan();

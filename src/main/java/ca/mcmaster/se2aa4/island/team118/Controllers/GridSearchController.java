@@ -12,25 +12,8 @@ import org.json.JSONObject;
 
 
 
-import ca.mcmaster.se2aa4.island.team118.Decision;
-import ca.mcmaster.se2aa4.island.team118.Direction;
-import ca.mcmaster.se2aa4.island.team118.Drone;
-import ca.mcmaster.se2aa4.island.team118.GameMap;
-import ca.mcmaster.se2aa4.island.team118.JsonReader;
-import ca.mcmaster.se2aa4.island.team118.Reader;
-import ca.mcmaster.se2aa4.island.team118.Position;
-import ca.mcmaster.se2aa4.island.team118.Tile;
-import ca.mcmaster.se2aa4.island.team118.MissionPhases.Danger;
-import ca.mcmaster.se2aa4.island.team118.MissionPhases.DoubleShift;
-import ca.mcmaster.se2aa4.island.team118.MissionPhases.EchoAfterExplore;
-import ca.mcmaster.se2aa4.island.team118.MissionPhases.ExploreGround;
-import ca.mcmaster.se2aa4.island.team118.MissionPhases.FindGround;
-import ca.mcmaster.se2aa4.island.team118.MissionPhases.FlyToGround;
-import ca.mcmaster.se2aa4.island.team118.MissionPhases.FlyToUturn;
-import ca.mcmaster.se2aa4.island.team118.MissionPhases.Phase;
-import ca.mcmaster.se2aa4.island.team118.MissionPhases.ReturnHome;
-import ca.mcmaster.se2aa4.island.team118.MissionPhases.Shift;
-import ca.mcmaster.se2aa4.island.team118.MissionPhases.Uturn;
+import ca.mcmaster.se2aa4.island.team118.*;
+import ca.mcmaster.se2aa4.island.team118.MissionPhases.*;
 
 public class GridSearchController implements Controller {
 
@@ -107,78 +90,24 @@ public class GridSearchController implements Controller {
                 if (phase.getCurrentPhase().equals("Danger")){
                     phase = new FindGround(drone);
                 }
-                switch(echo_dir) {
-                    case N:
-                        map.putTile(new Position(drone.getLocation().moveY(range)), tile);
-                        //Update the phase if the tile is ground
-                        if (tile.isGround() && (phase.getCurrentPhase().equals("FindGround")||phase.getCurrentPhase().equals("EchoAfterExplore")||phase.getCurrentPhase().equals("Uturn")||phase.getCurrentPhase().equals("Shift")||phase.getCurrentPhase().equals("DoubleShift"))) {
-                            phase = new FlyToGround(drone, echo_dir, range + 1);
-                        } else if ((!tile.isGround())&&phase.getCurrentPhase().equals("EchoAfterExplore")){
-                            isLeft = !isLeft;
-                            phase = new FlyToUturn(drone, isLeft);
-                        } else if ((!tile.isGround()||range>2)&&phase.getCurrentPhase().equals("FlyToUturn")){
-                            phase = new Uturn(drone, isLeft);
-                        } else if ((!tile.isGround())&&phase.getCurrentPhase().equals("Uturn")) {
-                            phase  = new Shift(drone, isLeft);
-                        } else if ((!tile.isGround())&&phase.getCurrentPhase().equals("Shift")){
-                            phase = new DoubleShift(drone, isLeft);
-                            isLeft = !isLeft;
-                        }
-                        break;
-                    case E:
-                        map.putTile(new Position(drone.getLocation().moveX(range)), tile);
-                        //Update the phase if the tile is ground
-                        if (tile.isGround() && (phase.getCurrentPhase().equals("FindGround")||phase.getCurrentPhase().equals("EchoAfterExplore")||phase.getCurrentPhase().equals("Uturn")||phase.getCurrentPhase().equals("Shift")||phase.getCurrentPhase().equals("DoubleShift"))) {
-                            phase = new FlyToGround(drone, echo_dir, range + 1);
-                        } else if (!tile.isGround()&&phase.getCurrentPhase().equals("EchoAfterExplore")){
-                            isLeft = !isLeft;
-                            phase = new FlyToUturn(drone, isLeft);
-                        } else if ((!tile.isGround())&&phase.getCurrentPhase().equals("FlyToUturn")){
-                            phase = new Uturn(drone, isLeft);
-                        } else if ((!tile.isGround())&&phase.getCurrentPhase().equals("Uturn")) {
-                            phase  = new Shift(drone, isLeft);
-                        } else if ((!tile.isGround())&&phase.getCurrentPhase().equals("Shift")){
-                            phase = new DoubleShift(drone, isLeft);
-                            isLeft = !isLeft;
-                        }
-                        break;
-                    case S:
-                        map.putTile(new Position(drone.getLocation().moveY(-range)), tile);
-                        //Update the phase if the tile is ground
-                        if (tile.isGround() && (phase.getCurrentPhase().equals("FindGround")||phase.getCurrentPhase().equals("EchoAfterExplore")||phase.getCurrentPhase().equals("Uturn")||phase.getCurrentPhase().equals("Shift")||phase.getCurrentPhase().equals("DoubleShift"))) {
-                            phase = new FlyToGround(drone, echo_dir, range + 1);
-                        } else if (!tile.isGround()&&phase.getCurrentPhase().equals("EchoAfterExplore")){
-                            isLeft = !isLeft;
-                            phase = new FlyToUturn(drone,isLeft);
-                        } else if ((!tile.isGround())&&phase.getCurrentPhase().equals("FlyToUturn")){
-                            phase = new Uturn(drone, isLeft);
-                        } else if ((!tile.isGround())&&phase.getCurrentPhase().equals("Uturn")) {
-                            phase  = new Shift(drone, isLeft);
-                        } else if ((!tile.isGround())&&phase.getCurrentPhase().equals("Shift")){
-                            phase = new DoubleShift(drone, isLeft);
-                            isLeft = !isLeft;
-                        }
-                        break;
-                    case W:
-                        map.putTile(new Position(drone.getLocation().moveX(-range)), tile);
-                        //Update the phase if the tile is ground
-                        if (tile.isGround() && (phase.getCurrentPhase().equals("FindGround")||phase.getCurrentPhase().equals("EchoAfterExplore")||phase.getCurrentPhase().equals("Uturn")||phase.getCurrentPhase().equals("Shift")||phase.getCurrentPhase().equals("DoubleShift"))) {
-                            phase = new FlyToGround(drone, echo_dir, range + 1);
-                        } else if (!tile.isGround()&&phase.getCurrentPhase().equals("EchoAfterExplore")){
-                            isLeft = !isLeft;
-                            phase = new FlyToUturn(drone, isLeft);
-                        } else if ((!tile.isGround())&&phase.getCurrentPhase().equals("FlyToUturn")){
-                            phase = new Uturn(drone, isLeft);
-                        } else if ((!tile.isGround())&&phase.getCurrentPhase().equals("Uturn")) {
-                            phase  = new Shift(drone, isLeft);
-                        } else if ((!tile.isGround())&&phase.getCurrentPhase().equals("Shift")){
-                            phase = new DoubleShift(drone, isLeft);
-                            isLeft = !isLeft;
-                        }
-                        break;
-                    default:
-                        throw new IllegalArgumentException();
+                Position tile_position = new Position(drone.getLocation().getX(),drone.getLocation().getY());
+                tile_position.move(range, echo_dir);
+                map.putTile(tile_position, tile);
+                //Update the phase if the tile is ground
+                if (tile.isGround() && (phase.getCurrentPhase().equals("FindGround")||phase.getCurrentPhase().equals("EchoAfterExplore")||phase.getCurrentPhase().equals("Uturn")||phase.getCurrentPhase().equals("Shift")||phase.getCurrentPhase().equals("DoubleShift"))) {
+                    phase = new FlyToGround(drone, echo_dir, range + 1);
+                } else if ((!tile.isGround())&&phase.getCurrentPhase().equals("EchoAfterExplore")){
+                    isLeft = !isLeft;
+                    phase = new FlyToUturn(drone, isLeft);
+                } else if ((!tile.isGround()||range>2)&&phase.getCurrentPhase().equals("FlyToUturn")){
+                    phase = new Uturn(drone, isLeft);
+                } else if ((!tile.isGround())&&phase.getCurrentPhase().equals("Uturn")) {
+                    phase  = new Shift(drone, isLeft);
+                } else if ((!tile.isGround())&&phase.getCurrentPhase().equals("Shift")){
+                    phase = new DoubleShift(drone, isLeft);
+                    isLeft = !isLeft;
                 }
+                        
                 break;
             case "scan":
                 tile = reader.scan();

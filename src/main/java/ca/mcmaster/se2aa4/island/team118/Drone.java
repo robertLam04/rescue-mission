@@ -42,103 +42,26 @@ public class Drone {
     }
     
     public void fly(){
-        switch (heading) {
-            case N:
-                location.moveY(1);
-                break;
-            case E:
-                location.moveX(1);
-                break;
-            case S:
-                location.moveY(-1);
-                break;
-            case W:
-                location.moveX(-1);
-                break;
-            default:
-                throw new IllegalArgumentException();
-       }
+        location.move(1, heading);
     }
 
     public Position potentialFly(){
-        switch (heading) {
-            case N:
-                return new Position(location.getX(),location.getY()+1);
-            case E:
-                return new Position(location.getX()+1,location.getY());
-            case S:
-                return new Position(location.getX(),location.getY()-1);
-            case W:
-            return new Position(location.getX()-1,location.getY());
-            default:
-                throw new IllegalArgumentException();
-       }
+        Position potentialPosition = new Position(location.getX(),location.getY()+1);
+        potentialPosition.move(1, heading);
+        return potentialPosition;
+           
     }
 
     public Position potentialDoubleFly(){
-        switch (heading) {
-            case N:
-                return new Position(location.getX(),location.getY()+2);
-            case E:
-                return new Position(location.getX()+2,location.getY());
-            case S:
-                return new Position(location.getX(),location.getY()-2);
-            case W:
-            return new Position(location.getX()-2,location.getY());
-            default:
-                throw new IllegalArgumentException();
-       }
+        Position potentialPosition = new Position(location.getX(),location.getY()+1);
+        potentialPosition.move(2, heading);
+        return potentialPosition;
     }
 
-    public void heading(Direction turningDirection){
-        switch (this.heading) {
-            case N:
-                if (this.heading.left() == turningDirection){
-                    location.moveY(1);
-                    location.moveX(-1);
-                    this.heading = turningDirection;
-                } else if (this.heading.right() == turningDirection) {
-                    location.moveY(1);
-                    location.moveX(1);
-                    this.heading = turningDirection;
-                }
-                break;
-            case E:
-                if (this.heading.left() == turningDirection){
-                    location.moveY(1);
-                    location.moveX(1);
-                    this.heading = turningDirection;
-                } else if (this.heading.right() == turningDirection) {
-                    location.moveY(-1);
-                    location.moveX(1);
-                    this.heading = turningDirection;
-                }
-                break;
-            case S:
-                if (this.heading.left() == turningDirection){
-                    location.moveY(-1);
-                    location.moveX(1);
-                    this.heading = turningDirection;
-                } else if (this.heading.right() == turningDirection) {
-                    location.moveY(-1);
-                    location.moveX(-1);
-                    this.heading = turningDirection;
-                }
-                break;
-            case W:
-                if (this.heading.left() == turningDirection){
-                    location.moveY(-1);
-                    location.moveX(-1);
-                    this.heading = turningDirection;
-                } else if (this.heading.right() == turningDirection) {
-                    location.moveY(1);
-                    location.moveX(-1);
-                    this.heading = turningDirection;
-                }
-                break;
-            default:
-                throw new IllegalArgumentException();
-       }
+    public void heading(Direction turningDirection){        
+        location.move(1, heading);
+        location.move(1, turningDirection);
+        this.heading = turningDirection;
     }
 
 }

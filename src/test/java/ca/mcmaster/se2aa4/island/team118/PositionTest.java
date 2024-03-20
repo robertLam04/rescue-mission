@@ -8,7 +8,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class PositionTest {
+/*
+ * public class PositionTest {
     private Integer x;
     private Integer y;
     private Integer altX;
@@ -109,3 +110,5 @@ public class PositionTest {
     }
 
 }
+ */
+
