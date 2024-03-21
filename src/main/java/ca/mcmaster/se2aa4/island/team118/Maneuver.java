@@ -49,42 +49,42 @@ public class Maneuver {
 
     public Queue<JSONObject> shiftLeft(Direction droneHeading) {
         Queue<JSONObject> decisionQueue = new LinkedList<>();
-        decisionQueue.add(decisionMaker.heading(droneHeading.right()));
-        decisionQueue.add(decisionMaker.heading(droneHeading.right().right()));
         decisionQueue.add(decisionMaker.heading(droneHeading.left()));
         decisionQueue.add(decisionMaker.fly());
+        decisionQueue.add(decisionMaker.heading(droneHeading.left().left()));
+        decisionQueue.add(decisionMaker.heading(droneHeading.right()));
         decisionQueue.add(decisionMaker.heading(droneHeading));
         return decisionQueue;
     }
 
     public Queue<JSONObject> shiftLeft2(Direction droneHeading) {
         Queue<JSONObject> decisionQueue = new LinkedList<>();
-        decisionQueue.add(decisionMaker.heading(droneHeading.right()));
-        decisionQueue.add(decisionMaker.heading(droneHeading.right().right()));
         decisionQueue.add(decisionMaker.heading(droneHeading.left()));
         decisionQueue.add(decisionMaker.fly());
         decisionQueue.add(decisionMaker.fly());
+        decisionQueue.add(decisionMaker.heading(droneHeading.left().left()));
+        decisionQueue.add(decisionMaker.heading(droneHeading.right()));
         decisionQueue.add(decisionMaker.heading(droneHeading));
         return decisionQueue;
     }
 
     public Queue<JSONObject> shiftRight(Direction droneHeading) {
         Queue<JSONObject> decisionQueue = new LinkedList<>();
-        decisionQueue.add(decisionMaker.heading(droneHeading.left()));
-        decisionQueue.add(decisionMaker.heading(droneHeading.left().left()));
         decisionQueue.add(decisionMaker.heading(droneHeading.right()));
         decisionQueue.add(decisionMaker.fly());
+        decisionQueue.add(decisionMaker.heading(droneHeading.right().right()));
+        decisionQueue.add(decisionMaker.heading(droneHeading.left()));
         decisionQueue.add(decisionMaker.heading(droneHeading));
         return decisionQueue;
     }
 
     public Queue<JSONObject> shiftRight2(Direction droneHeading) {
         Queue<JSONObject> decisionQueue = new LinkedList<>();
-        decisionQueue.add(decisionMaker.heading(droneHeading.left()));
-        decisionQueue.add(decisionMaker.heading(droneHeading.left().left()));
         decisionQueue.add(decisionMaker.heading(droneHeading.right()));
         decisionQueue.add(decisionMaker.fly());
         decisionQueue.add(decisionMaker.fly());
+        decisionQueue.add(decisionMaker.heading(droneHeading.right().right()));
+        decisionQueue.add(decisionMaker.heading(droneHeading.left()));
         decisionQueue.add(decisionMaker.heading(droneHeading));
         return decisionQueue;
     }

@@ -26,7 +26,7 @@ public class GridSearchController implements Controller {
     private Phase phase;
     private Decision decision = new Decision();
     private int POICount = 0;
-    private boolean isLeft = false;
+    private boolean isLeft = true;
 
     public GridSearchController(Integer battery, Direction initial_direction) {
         drone = new Drone(battery, initial_direction);
@@ -47,13 +47,16 @@ public class GridSearchController implements Controller {
             return previous_decision.toString();
         }
         
-        /*try{
-            if (map.getTile(drone.potentialFly()).getIsBorder()&& !phase.getCurrentPhase().equals("Danger")){
+        try{
+            /*if (map.outOfBounds(drone.potentialFly())&&!phase.getCurrentPhase().equals("Danger")){
                 phase = new Danger(drone);
-            }
-            if (map.getTile(drone.potentialDoubleFly()).getIsBorder()){
+            } else if (map.outOfBounds(drone.potentialDoubleFly())&&!phase.getCurrentPhase().equals("Danger")){
                 phase = new Danger(drone);
-            }
+            }*/
+            /*if (phase.getCurrentPhase().equals("Shift")&&map.outOfBounds(drone.potentialShift(!isLeft))){
+                phase = new SafeShift(drone, isLeft);
+            } */
+            
         }catch (NullPointerException e){
             logger.info(e);
         }
@@ -61,7 +64,7 @@ public class GridSearchController implements Controller {
         if (phase.isFinal()) {
             previous_decision = decision.stop();
             return decision.stop().toString();
-        }*/
+        }
 
         previous_decision = phase.getNextDecision();
         return previous_decision.toString();
@@ -93,21 +96,32 @@ public class GridSearchController implements Controller {
                 Position tile_position = new Position(drone.getLocation().getX(),drone.getLocation().getY());
                 tile_position.move(range, echo_dir);
                 map.putTile(tile_position, tile);
+                /*if (!tile.isGround()){
+                    map.setBorders(echo_dir, drone.getLocation(), range);
+                }*/
+                
                 //Update the phase if the tile is ground
-                if (tile.isGround() && (phase.getCurrentPhase().equals("FindGround")||phase.getCurrentPhase().equals("EchoAfterExplore")||phase.getCurrentPhase().equals("Uturn")||phase.getCurrentPhase().equals("Shift")||phase.getCurrentPhase().equals("DoubleShift"))) {
+                if (tile.isGround() && 
+                (phase.getCurrentPhase().equals("FindGround")||
+                phase.getCurrentPhase().equals("EchoAfterExplore")||
+                phase.getCurrentPhase().equals("Uturn")||
+                phase.getCurrentPhase().equals("Shift")||
+                phase.getCurrentPhase().equals("DoubleShift")||
+                phase.getCurrentPhase().equals("SafeUturn"))) {
                     phase = new FlyToGround(drone, echo_dir, range + 1);
                 } else if ((!tile.isGround())&&phase.getCurrentPhase().equals("EchoAfterExplore")){
                     isLeft = !isLeft;
                     phase = new FlyToUturn(drone, isLeft);
-                } else if ((!tile.isGround()||range>2)&&phase.getCurrentPhase().equals("FlyToUturn")){
+                } else if ((!tile.isGround()||range>3)&&phase.getCurrentPhase().equals("FlyToUturn")){
                     phase = new Uturn(drone, isLeft);
                 } else if ((!tile.isGround())&&phase.getCurrentPhase().equals("Uturn")) {
                     phase  = new Shift(drone, isLeft);
+                    isLeft = !isLeft;
                 } else if ((!tile.isGround())&&phase.getCurrentPhase().equals("Shift")){
+                    isLeft = !isLeft;
                     phase = new DoubleShift(drone, isLeft);
                     isLeft = !isLeft;
                 }
-                        
                 break;
             case "scan":
                 tile = reader.scan();
