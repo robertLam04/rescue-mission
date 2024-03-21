@@ -29,9 +29,9 @@ public class DoubleShift implements Phase {
 
     @Override
     public JSONObject getNextDecision() {
-        if (decision_queue.isEmpty()) {
+        /*if (decision_queue.isEmpty()) {
             decision_queue = DoubleShiftQ();
-        }
+        }*/
         return decision_queue.remove();
     }
 

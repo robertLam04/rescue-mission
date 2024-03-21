@@ -10,9 +10,12 @@ public class GameMap {
 
     private final Logger logger = LogManager.getLogger();
     private HashMap<Position, Tile> tileMap;
+    //might not be needed
+    private HashMap<Direction, Integer> borders;
   
     public GameMap() {
         this.tileMap = new HashMap<>();
+        this.borders = new HashMap<>();
     }
 
     public Tile getTile(Position pos) {
@@ -32,6 +35,32 @@ public class GameMap {
          */
         tileMap.put(position, tile);
     }
+
+    //might not be needed
+    public void setBorders(Direction direction, Position position, Integer range){
+        position.move(range, direction);
+        if (direction == Direction.N||direction == Direction.S){
+            borders.put(direction, position.getY());
+        } else if (direction == Direction.E||direction == Direction.W){
+            borders.put(direction, position.getX());
+        }
+    }
+
+    //might not be needed
+    public boolean outOfBounds(Position position){
+        if (position.getY() > borders.get(Direction.N)){
+            return true;
+        } else if (position.getX() > borders.get(Direction.E)){
+            return true;
+        } else if (position.getY() < borders.get(Direction.S)){
+            return true;
+        } else if (position.getX() < borders.get(Direction.W)){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     public void printMap() {
         for (Map.Entry<Position, Tile> entry : tileMap.entrySet()) {
