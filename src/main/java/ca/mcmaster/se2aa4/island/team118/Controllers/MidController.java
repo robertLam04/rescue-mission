@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import ca.mcmaster.se2aa4.island.team118.MissionPhases.*;
 import ca.mcmaster.se2aa4.island.team118.*;
 
+/* *
 public class MidController implements Controller {
     private final Logger logger = LogManager.getLogger();
     public JSONObject previous_decision;
@@ -56,7 +57,7 @@ public class MidController implements Controller {
             logger.info(e);
         }
 
-         */
+         *
         
         //If phase is final stop
         if (phase.isFinal()) {
@@ -191,3 +192,4 @@ public class MidController implements Controller {
     }
 
 }
+*/

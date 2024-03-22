@@ -1,13 +1,23 @@
 package ca.mcmaster.se2aa4.island.team118;
 
+import java.util.List;
+
 public interface Reader {
 
-    public Tile scan();
+    public String getDecision();
 
-    public Tile echo();
+    public boolean isGround();
+
+    public List<String> getCreeks();
+
+    public List<String> getBiomes();
+
+    public boolean isSite();
+
+    public Direction getDirection();
 
     public Integer range();
     
-    public void updateBattery(Drone drone);
+    public Integer getCost();
     
 }

@@ -3,18 +3,19 @@ package ca.mcmaster.se2aa4.island.team118.MissionPhases;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import org.json.JSONObject;
-
-import ca.mcmaster.se2aa4.island.team118.*;
+import ca.mcmaster.se2aa4.island.team118.ActionFactories.ActionFactory;
+import ca.mcmaster.se2aa4.island.team118.Actions.FlyAction;
+import ca.mcmaster.se2aa4.island.team118.Actions.ScanAction;
 
 public class ExploreGround implements Phase {
 
-    private Decision decision = new Decision();
-    private Queue<JSONObject> decision_queue = new LinkedList<>();
-    private Drone drone;
+    private Queue<String> decision_queue = new LinkedList<>();
+    private FlyAction fly;
+    private ScanAction scan;
 
-    public ExploreGround(Drone drone) {
-        this.drone = drone;
+    public ExploreGround(ActionFactory factory) {
+        this.fly = factory.createFlyAction();
+        this.scan = factory.createScanAction();
         this.decision_queue = ExploreGroundQ();
     }
 
@@ -23,7 +24,7 @@ public class ExploreGround implements Phase {
     }
 
     @Override
-    public JSONObject getNextDecision() {
+    public String getNextDecision() {
         if (decision_queue.isEmpty()) {
             decision_queue = ExploreGroundQ();
         }
@@ -31,16 +32,11 @@ public class ExploreGround implements Phase {
         return decision_queue.remove();
     }
 
-    private Queue<JSONObject> ExploreGroundQ() {
-        decision_queue.add(decision.fly());
-        decision_queue.add(decision.scan());
+    private Queue<String> ExploreGroundQ() {
+        decision_queue.add(fly.getString());
+        decision_queue.add(scan.getString());
 
         return decision_queue;
-    }
-
-    @Override
-    public boolean isFinal() {
-        return false;
     }
     
 }

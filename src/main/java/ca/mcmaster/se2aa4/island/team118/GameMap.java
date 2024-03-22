@@ -1,7 +1,10 @@
 package ca.mcmaster.se2aa4.island.team118;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Random;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,14 +28,6 @@ public class GameMap {
 
     //make seperate tile update method
     public void putTile(Position position, Tile tile) {
-        /*
-         * if (this.tileMap.get(position) == null){
-            tileMap.put(position, tile);
-        } else {
-            tileMap.remove(position);
-            tileMap.put(position, tile);
-        }
-         */
         tileMap.put(position, tile);
     }
 
@@ -88,9 +83,69 @@ public class GameMap {
             Position position = entry.getKey();
             Tile tile = entry.getValue();
             if (tile.isCreek()) {
-                creeksMap.put(position, tile.getCreek());
+                creeksMap.put(position, tile.getCreeks().get(0));
             }
         }
         return creeksMap;
     }
+
+        public String closestCreek() {
+        try {
+            Map<Position, String> creeksMap = this.creekPositions();
+            Position sitePosition = this.sitePosition();
+            double closest_distance = Double.MAX_VALUE;
+            String closest_creek = "";
+            if (creeksMap.isEmpty()) {
+                return "No creeks found";
+            } else {
+                for (Map.Entry<Position, String> entry : creeksMap.entrySet()) {
+                    Position creekPosition = entry.getKey();
+                    String creekId = entry.getValue();
+                    double current_distance = sitePosition.distanceFrom(creekPosition);
+                    if (current_distance < closest_distance) {
+                        closest_distance = current_distance;
+                        closest_creek = creekId;
+                    }
+                }
+            }
+            logger.info("Closest creek: " + closest_creek);
+            return closest_creek;
+        } catch (NoSuchElementException e) {
+            String random_creek = getRandomCreekId();
+            logger.info(random_creek);
+            return random_creek;
+        }
+    }
+
+    private String getRandomCreekId() {
+        Map<Position, String> creeksMap = this.creekPositions();
+        List<String> creekIds = new ArrayList<>(creeksMap.values());
+        Random random = new Random();
+        if (creeksMap.isEmpty()) {return "No creeks found";}
+        return creekIds.get(random.nextInt(creekIds.size()));
+    }
+
+    //Helper for testing (delete later)
+    public void printPOIS() {
+        try {
+            Map<Position, String> creeksMap = this.creekPositions();
+            Position sitePosition = this.sitePosition();
+            for (Map.Entry<Position, String> entry : creeksMap.entrySet()) {
+                Position position = entry.getKey();
+                String Id = entry.getValue();
+                logger.info("Creek Position: " + position.toString() + ", Creek ID: " + Id);
+            }
+            logger.info("Site Position: " + sitePosition.toString());
+        } catch (NoSuchElementException e) {
+            Map<Position, String> creeksMap = this.creekPositions();
+            for (Map.Entry<Position, String> entry : creeksMap.entrySet()) {
+                Position position = entry.getKey();
+                String Id = entry.getValue();
+                logger.info("Creek Position: " + position.toString() + ", Creek ID: " + Id);
+            }
+            logger.info("No emergency site found");
+        }
+        
+    }
+
 }
