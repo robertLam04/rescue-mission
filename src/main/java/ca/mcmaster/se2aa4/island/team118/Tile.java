@@ -1,22 +1,18 @@
 package ca.mcmaster.se2aa4.island.team118;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import org.json.JSONArray;
 
 public class Tile {
 
-    private boolean isBorder;
     private boolean isGround;
-    private JSONArray sites;
-    private JSONArray creeks;
-    private JSONArray biomes;
+    private boolean site;
+    private List<String> creeks;
+    private List<String> biomes;
 
     /* Might want to refactor this to be immutable at some point */
 
-    public Tile(JSONArray sites, JSONArray creeks, boolean isGround, JSONArray biomes) {
-        this.sites = sites;
+    public Tile(boolean site, List<String> creeks, boolean isGround, List<String> biomes) {
+        this.site = site;
         this.creeks = creeks;
         this.isGround = isGround;
         this.biomes = biomes;
@@ -27,25 +23,25 @@ public class Tile {
     }
 
     public boolean isPOI() {
-        return !creeks.isEmpty() || !sites.isEmpty();
+        return !creeks.isEmpty() || site;
     }   
 
     public boolean isSite() {
-        return sites != null && !sites.isEmpty();
+        return site;
     }
 
     public boolean isCreek() {
         return creeks != null && !creeks.isEmpty();
     }
 
-    public String getCreek() {
-        return creeks.getString(0);
+    public List<String> getCreeks() {
+        return creeks;
     }
 
     @Override
     public String toString() {
         return "Tile{" +
-            "isSite=" + (this.sites != null ? this.sites.toString() : "null") +
+            "isSite=" + (this.site ? "true" : "false") +
             ", isCreek=" + (this.creeks != null ? this.creeks.toString() : "null") +
             ", isGround=" + (this.isGround ? "true" : "false") +
             ", biomes=" + (this.biomes != null ? this.biomes.toString() : "null") +

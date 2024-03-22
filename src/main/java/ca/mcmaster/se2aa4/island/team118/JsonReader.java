@@ -1,62 +1,96 @@
 package ca.mcmaster.se2aa4.island.team118;
 
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 
 public class JsonReader implements Reader{
 
     private final Logger logger = LogManager.getLogger();
-    private JSONObject response;
+    private JSONObject json_response;
+    private JSONObject previous_decision;
     private Integer cost;
-    private String status;
     private JSONObject extraInfo;
 
-    public JsonReader(JSONObject response) {
-        this.response = response;
-        this.cost = response.getInt("cost");
-        this.extraInfo = response.getJSONObject("extras");
-        this.status = response.getString("status");
-        logger.info("** Response received:\n"+response.toString(2));
-        logger.info("The cost of the action was {}", cost);
-        logger.info("The status of the drone is {}", status);
-        logger.info("Additional information received: {}", extraInfo);
+    public JsonReader(String previous_decision, String response) {
+        this.json_response = new JSONObject(new JSONTokener(new StringReader(response)));
+        this.previous_decision = new JSONObject(new JSONTokener(new StringReader(previous_decision)));
+        this.cost = json_response.getInt("cost");
+        this.extraInfo = json_response.getJSONObject("extras");
     }
 
-    public void updateBattery(Drone drone) {
-        //update battery
-        drone.updateBattery(cost);
+    public String getDecision() {
+        return previous_decision.getString("action");
     }
 
-    public Tile echo() {
-        //record radars
-        JSONArray site = new JSONArray();
-        JSONArray creek = new JSONArray();
-        JSONArray biomes = new JSONArray();
-
-        if ("OUT_OF_RANGE".equals(extraInfo.getString("found"))) {
+    public boolean isGround() {
+        if (extraInfo.has("biomes")) {
+            JSONArray biomes = extraInfo.getJSONArray("biomes");
+            if (biomes.length() == 1 && biomes.getString(0).equals("OCEAN")) {
+                return false;
+            }
+        } else if (extraInfo.has("found")) {
+            if (extraInfo.getString("found").equals("OUT_OF_RANGE"))
             //Create a tile range - 1 tiles away in the direction that is a border
-            Tile tile = new Tile(site, creek, false, biomes);
-            return tile;
+            return false;
         }
-        //Create a tile range tiles away in the direction that is ground
-        Tile tile = new Tile(site, creek, true, biomes);
-        return tile;
+        return true;
     }
     
-    public Tile scan() {
-        //record scanning (technical debt: how are we going to know if we are scanning while on a border)
-        JSONArray site = extraInfo.getJSONArray("sites");
-        JSONArray creek = extraInfo.getJSONArray("creeks");
-        JSONArray biomes = extraInfo.getJSONArray("biomes");
-
-        if (biomes.length() == 1 & biomes.get(0).equals("OCEAN")) {
-            Tile tile = new Tile(site, creek, false, biomes);
-            return tile;
+    public List<String> getCreeks() {
+        JSONArray creeks;
+        if (extraInfo.has("creeks")) {
+            creeks = extraInfo.getJSONArray("creeks");
+        } else {
+            return new ArrayList<>();
         }
-        Tile tile = new Tile(site, creek, true, biomes);
-        return tile;   
+
+        List<String> creekList = new ArrayList<>();
+        
+        for (int i = 0; i < creeks.length(); i++) {
+            creekList.add(creeks.getString(i));
+        }
+
+        return creekList;
+    }
+
+    public List<String> getBiomes() {
+        JSONArray biomes;
+        if (extraInfo.has("biomes")) {
+            biomes = extraInfo.getJSONArray("biomes");
+        } else {
+            return new ArrayList<>();
+        }
+
+        List<String> biomeList = new ArrayList<>();
+        
+        for (int i = 0; i < biomes.length(); i++) {
+            biomeList.add(biomes.getString(i));
+        }
+
+        return biomeList;
+    }
+
+    public boolean isSite() {
+        JSONArray site;
+        if (extraInfo.has("sites")) {
+            site = extraInfo.getJSONArray("sites");
+        } else {
+            return false;
+        }
+        return site.isEmpty();
+    }
+
+    public Direction getDirection() {
+        JSONObject params = previous_decision.getJSONObject("parameters");
+        String direction = params.getString("direction");
+        return Direction.fromString(direction);
     }
 
     public Integer range(){
@@ -66,6 +100,11 @@ public class JsonReader implements Reader{
             return range;
         }
         throw new IllegalStateException();
+    }
+
+    public Integer getCost() {
+        //update battery
+        return cost;
     }
 }
 

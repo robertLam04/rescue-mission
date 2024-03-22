@@ -1,17 +1,17 @@
 package ca.mcmaster.se2aa4.island.team118.MissionPhases;
 
-import org.json.JSONObject;
-
 import ca.mcmaster.se2aa4.island.team118.Drone;
-import ca.mcmaster.se2aa4.island.team118.Decision;
+import ca.mcmaster.se2aa4.island.team118.ActionFactories.ActionFactory;
+import ca.mcmaster.se2aa4.island.team118.Actions.EchoAction;
 
 public class EchoAfterExplore implements Phase {
 
     private Drone drone;
-    private Decision decision = new Decision();
+    private EchoAction echo;
 
-    public EchoAfterExplore(Drone drone){
+    public EchoAfterExplore(Drone drone, ActionFactory factory){
         this.drone = drone;
+        this.echo = factory.createEchoAction();
     }
     
     @Override
@@ -20,13 +20,8 @@ public class EchoAfterExplore implements Phase {
     }
 
     @Override
-    public JSONObject getNextDecision() {
-        return decision.echo(drone.getHeading());
-    }
-
-    @Override
-    public boolean isFinal() {
-        return false;
+    public String getNextDecision() {
+        return echo.getString(drone.getHeading());
     }
     
 }

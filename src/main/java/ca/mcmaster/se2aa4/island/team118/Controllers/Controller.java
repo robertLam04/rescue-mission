@@ -1,13 +1,11 @@
 package ca.mcmaster.se2aa4.island.team118.Controllers;
 
-import org.json.JSONObject;
+import ca.mcmaster.se2aa4.island.team118.Reader;
 
 public interface Controller {
 
     public String makeDecision();
     
-    public void acknowledge(JSONObject object);
-
-    public String closestCreek();
+    public void processDecision(Reader reader);
 
 } 
