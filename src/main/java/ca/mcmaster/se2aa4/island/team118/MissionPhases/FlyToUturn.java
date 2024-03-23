@@ -3,21 +3,24 @@ package ca.mcmaster.se2aa4.island.team118.MissionPhases;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import org.json.JSONObject;
-
-import ca.mcmaster.se2aa4.island.team118.Decision;
 import ca.mcmaster.se2aa4.island.team118.Drone;
+import ca.mcmaster.se2aa4.island.team118.ActionFactories.ActionFactory;
+import ca.mcmaster.se2aa4.island.team118.Actions.EchoAction;
+import ca.mcmaster.se2aa4.island.team118.Actions.FlyAction;
 
 public class FlyToUturn implements Phase {
 
-    private Decision decision = new Decision();
-    private Queue<JSONObject> decision_queue = new LinkedList<>();
+    private Queue<String> decision_queue = new LinkedList<>();
     private Drone drone;
     private boolean isLeft;
+    private EchoAction echo;
+    private FlyAction fly;
 
-    public FlyToUturn(Drone drone, boolean isLeft) {
+    public FlyToUturn(Drone drone, boolean isLeft, ActionFactory factory) {
         this.drone = drone;
         this.isLeft = isLeft;
+        this.fly = factory.createFlyAction();
+        this.echo = factory.createEchoAction();
         this.decision_queue = FlyToUturnQ();
     }
 
@@ -27,7 +30,7 @@ public class FlyToUturn implements Phase {
     }
 
     @Override
-    public JSONObject getNextDecision() {
+    public String getNextDecision() {
         if (decision_queue.isEmpty()) {
             decision_queue = FlyToUturnQ();
         }
@@ -35,18 +38,13 @@ public class FlyToUturn implements Phase {
         return decision_queue.remove();
     }
 
-    @Override
-    public boolean isFinal() {
-        return false;
-    }
-
-    public Queue<JSONObject> FlyToUturnQ(){
+    public Queue<String> FlyToUturnQ(){
         if (isLeft){
-            decision_queue.add(decision.echo(drone.getHeading().left()));
-            decision_queue.add(decision.fly());
+            decision_queue.add(echo.getString(drone.getHeading().left()));
+            decision_queue.add(fly.getString());
         } else {
-            decision_queue.add(decision.echo(drone.getHeading().right()));
-            decision_queue.add(decision.fly());
+            decision_queue.add(echo.getString(drone.getHeading().right()));
+            decision_queue.add(fly.getString());
         }
         return decision_queue;
     }

@@ -45,16 +45,31 @@ public class Drone {
         location.move(1, heading);
     }
 
+
+    //might not be needed
     public Position potentialFly(){
-        Position potentialPosition = new Position(location.getX(),location.getY()+1);
+        Position potentialPosition = new Position(location.getX(),location.getY());
         potentialPosition.move(1, heading);
         return potentialPosition;
            
     }
 
+    //might not be needed
     public Position potentialDoubleFly(){
-        Position potentialPosition = new Position(location.getX(),location.getY()+1);
+        Position potentialPosition = new Position(location.getX(),location.getY());
         potentialPosition.move(2, heading);
+        return potentialPosition;
+    }
+
+
+    //might not be needed
+    public Position potentialShift(Boolean isLeft){
+        Position potentialPosition = new Position(location.getX(),location.getY());
+        if (isLeft){
+            potentialPosition.move(2, heading.left());
+        } else {
+            potentialPosition.move(2, heading.right());
+        }
         return potentialPosition;
     }
 

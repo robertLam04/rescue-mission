@@ -9,15 +9,22 @@ import eu.ace_design.island.bot.IExplorerRaid;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import ca.mcmaster.se2aa4.island.team118.Acknowledgers.*;
+import ca.mcmaster.se2aa4.island.team118.ActionFactories.ActionFactory;
+import ca.mcmaster.se2aa4.island.team118.ActionFactories.JsonFactory;
 import ca.mcmaster.se2aa4.island.team118.Controllers.Controller;
 import ca.mcmaster.se2aa4.island.team118.Controllers.GridSearchController;
-import ca.mcmaster.se2aa4.island.team118.Controllers.MidController;
-import ca.mcmaster.se2aa4.island.team118.Controllers.StupidController;
 
 public class Explorer implements IExplorerRaid {
 
     private final Logger logger = LogManager.getLogger();
     Controller midController;
+    Acknowledger acknowledger;
+    Drone drone;
+    GameMap map;
+    ActionFactory factory;
+    String previous_decision;
+    Reader json_reader;
 
     @Override
     public void initialize(String s) {
@@ -31,32 +38,47 @@ public class Explorer implements IExplorerRaid {
         logger.info("The drone is facing {}", direction);
         logger.info("Battery level is {}", batteryLevel);
 
-        midController = new GridSearchController(batteryLevel, initial_heading);
+        factory = new JsonFactory();
+        drone = new Drone(batteryLevel, initial_heading);
+        midController = new GridSearchController(drone, factory);
+        map = new GameMap();
 
     }
 
     @Override
     public String takeDecision() {
-        String decision = midController.makeDecision();
-        return decision;
+        previous_decision = midController.makeDecision();
+        return previous_decision;
     }
 
     @Override
     public void acknowledgeResults(String s) {
-        JSONObject response = new JSONObject(new JSONTokener(new StringReader(s))); 
-        midController.acknowledge(response);
+        json_reader = new JsonReader(previous_decision, s);
+        switch (json_reader.getDecision()) {
+            case "fly":
+                acknowledger = new FlyAcknowledger(drone, json_reader);
+                break;
+            case "heading": 
+                acknowledger = new HeadingAcknowledger(drone, json_reader);
+                break;
+            case "echo":
+                acknowledger = new EchoAcknowledger(drone, map, json_reader);
+                break;
+            case "scan":
+                acknowledger = new ScanAcknowledger(drone, map, json_reader);
+                break;
+            case "stop":
+                break;
+            default:
+                throw new IllegalArgumentException();
+        }
+        acknowledger.acknowledgeResults();
+        midController.processDecision(json_reader);
     }
 
     @Override
     public String deliverFinalReport() {
-
-        ((GridSearchController) midController).printPOIS();
-        return midController.closestCreek();
-    }
-
-    public enum Biome {
-        UNKNOWN,
-        LAKE;
+        return map.closestCreek();
     }
 
 }

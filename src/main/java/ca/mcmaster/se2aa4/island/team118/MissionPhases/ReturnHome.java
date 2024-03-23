@@ -1,11 +1,15 @@
 package ca.mcmaster.se2aa4.island.team118.MissionPhases;
 
-import ca.mcmaster.se2aa4.island.team118.*;
-import org.json.JSONObject;
+import ca.mcmaster.se2aa4.island.team118.ActionFactories.ActionFactory;
+import ca.mcmaster.se2aa4.island.team118.Actions.StopAction;
 
 public class ReturnHome implements Phase {
 
-    private Decision decision = new Decision();
+    private StopAction stop;
+
+    public ReturnHome(ActionFactory factory) {
+        this.stop = factory.createStopAction();
+    }
 
     @Override
     public String getCurrentPhase() {
@@ -13,13 +17,8 @@ public class ReturnHome implements Phase {
     }
 
     @Override
-    public JSONObject getNextDecision() {
-        return decision.stop();
+    public String getNextDecision() {
+        return stop.getString();
     }
 
-    @Override
-    public boolean isFinal() {
-        return true;
-    }
-    
 }

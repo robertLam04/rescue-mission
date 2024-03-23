@@ -3,22 +3,23 @@ package ca.mcmaster.se2aa4.island.team118.MissionPhases;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import org.json.JSONObject;
-
-import ca.mcmaster.se2aa4.island.team118.Decision;
 import ca.mcmaster.se2aa4.island.team118.Drone;
 import ca.mcmaster.se2aa4.island.team118.Maneuver;
+import ca.mcmaster.se2aa4.island.team118.ActionFactories.ActionFactory;
+import ca.mcmaster.se2aa4.island.team118.Actions.EchoAction;
 
 public class DoubleShift implements Phase {
-    private Decision decision = new Decision();
-    private Queue<JSONObject> decision_queue = new LinkedList<>();
+    private Queue<String> decision_queue = new LinkedList<>();
+    private EchoAction echo;
     private Drone drone;
     private boolean isLeft;
-    private Maneuver maneuver = new Maneuver();
+    private Maneuver maneuver;
 
-    public DoubleShift(Drone drone, boolean isLeft) {
+    public DoubleShift(Drone drone, boolean isLeft, ActionFactory factory) {
         this.drone = drone;
+        this.echo = factory.createEchoAction();
         this.isLeft = isLeft;
+        this.maneuver = new Maneuver(factory);
         this.decision_queue = DoubleShiftQ();
     }
 
@@ -28,20 +29,15 @@ public class DoubleShift implements Phase {
     }
 
     @Override
-    public JSONObject getNextDecision() {
-        if (decision_queue.isEmpty()) {
+    public String getNextDecision() {
+        /*if (decision_queue.isEmpty()) {
             decision_queue = DoubleShiftQ();
-        }
+        }*/
         return decision_queue.remove();
     }
 
-    @Override
-    public boolean isFinal() {
-        return false;
-    }
-
-    public Queue<JSONObject> DoubleShiftQ(){
-        Queue<JSONObject> doubleShiftQueue; 
+    public Queue<String> DoubleShiftQ(){
+        Queue<String> doubleShiftQueue; 
         if (isLeft){
             doubleShiftQueue = maneuver.shiftLeft2(drone.getHeading());
         } else {
@@ -50,7 +46,7 @@ public class DoubleShift implements Phase {
         while (!doubleShiftQueue.isEmpty()){
             decision_queue.add(doubleShiftQueue.remove());
         }
-        decision_queue.add(decision.echo(drone.getHeading()));
+        decision_queue.add(echo.getString(drone.getHeading()));
         return decision_queue;
 
     }

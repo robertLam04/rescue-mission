@@ -3,19 +3,21 @@ package ca.mcmaster.se2aa4.island.team118.MissionPhases;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import org.json.JSONObject;
-
-import ca.mcmaster.se2aa4.island.team118.Decision;
 import ca.mcmaster.se2aa4.island.team118.Drone;
+import ca.mcmaster.se2aa4.island.team118.ActionFactories.ActionFactory;
+import ca.mcmaster.se2aa4.island.team118.Actions.*;
 
 public class Danger implements Phase{
 
-    private Decision decision = new Decision();
-    private Queue<JSONObject> decision_queue = new LinkedList<>();
+    private Queue<String> decision_queue = new LinkedList<>();
     private Drone drone;
+    private HeadingAction heading;
+    private EchoAction echo;
 
-    public Danger(Drone drone) {
+    public Danger(Drone drone, ActionFactory factory) {
         this.drone = drone;
+        this.echo = factory.createEchoAction();
+        this.heading = factory.createHeadingAction();
         this.decision_queue = dangerQ();
     }
 
@@ -25,22 +27,14 @@ public class Danger implements Phase{
     }
 
     @Override
-    public JSONObject getNextDecision() {
-        
+    public String getNextDecision() {
         return decision_queue.remove();
     }
 
-    @Override
-    public boolean isFinal() {
-        return false;
-    }
-
-    private Queue<JSONObject> dangerQ() {
-        decision_queue.add(decision.heading(drone.getHeading().right()));
-        //make getHeading.180
-        decision_queue.add(decision.heading(drone.getHeading().right().right()));
-        decision_queue.add(decision.echo(drone.getHeading().right().right()));
-
+    private Queue<String> dangerQ() {
+        decision_queue.add(heading.getString(drone.getHeading().right()));
+        decision_queue.add(heading.getString(drone.getHeading().right().right()));
+        decision_queue.add(echo.getString(drone.getHeading().right().right()));
 
         return decision_queue;
     }

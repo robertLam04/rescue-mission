@@ -3,23 +3,27 @@ package ca.mcmaster.se2aa4.island.team118.MissionPhases;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import org.json.JSONObject;
-
-import ca.mcmaster.se2aa4.island.team118.Decision;
 import ca.mcmaster.se2aa4.island.team118.Drone;
 import ca.mcmaster.se2aa4.island.team118.Maneuver;
+import ca.mcmaster.se2aa4.island.team118.ActionFactories.ActionFactory;
+import ca.mcmaster.se2aa4.island.team118.Actions.EchoAction;
+import ca.mcmaster.se2aa4.island.team118.Actions.ScanAction;
 
 public class Uturn implements Phase {
 
-    private Decision decision = new Decision();
-    private Queue<JSONObject> decision_queue = new LinkedList<>();
+    private Queue<String> decision_queue = new LinkedList<>();
     private Drone drone;
     private boolean isLeft;
-    private Maneuver maneuver = new Maneuver();
+    private Maneuver maneuver;
+    private ScanAction scan;
+    private EchoAction echo;
 
-    public Uturn(Drone drone, boolean isLeft) {
+    public Uturn(Drone drone, boolean isLeft, ActionFactory factory) {
         this.drone = drone;
         this.isLeft = isLeft;
+        this.scan = factory.createScanAction();
+        this.echo = factory.createEchoAction();
+        this.maneuver = new Maneuver(factory);
         this.decision_queue = UturnQ();
     }
     
@@ -29,7 +33,7 @@ public class Uturn implements Phase {
     }
 
     @Override
-    public JSONObject getNextDecision() {
+    public String getNextDecision() {
         if (decision_queue.isEmpty()) {
             decision_queue = UturnQ();
         }
@@ -37,13 +41,8 @@ public class Uturn implements Phase {
         return decision_queue.remove();
     }
 
-    @Override
-    public boolean isFinal() {
-        return false;
-    }
-
-    public Queue<JSONObject> UturnQ(){
-        Queue<JSONObject> uturnQueue;
+    public Queue<String> UturnQ(){
+        Queue<String> uturnQueue;
         if (isLeft){
             uturnQueue = maneuver.uturnLeft(drone.getHeading());
 
@@ -53,8 +52,8 @@ public class Uturn implements Phase {
         while (!uturnQueue.isEmpty()){
             decision_queue.add(uturnQueue.remove());
         }
-        decision_queue.add(decision.scan());
-        decision_queue.add(decision.echo(drone.getHeading().right().right()));
+        decision_queue.add(scan.getString());
+        decision_queue.add(echo.getString(drone.getHeading().right().right()));
 
         return decision_queue;
     }
