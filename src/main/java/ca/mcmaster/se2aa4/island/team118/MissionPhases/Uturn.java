@@ -11,7 +11,7 @@ import ca.mcmaster.se2aa4.island.team118.Actions.ScanAction;
 
 public class Uturn implements Phase {
 
-    private Queue<String> decision_queue = new LinkedList<>();
+    private Queue<String> decisionQueue = new LinkedList<>();
     private Drone drone;
     private boolean isLeft;
     private Maneuver maneuver;
@@ -24,23 +24,43 @@ public class Uturn implements Phase {
         this.scan = factory.createScanAction();
         this.echo = factory.createEchoAction();
         this.maneuver = new Maneuver(factory);
-        this.decision_queue = UturnQ();
+        this.decisionQueue = UturnQ();
     }
     
+    /**
+    Gets the current phase in string format
+
+    @return string     the string representing the
+                       phase
+    */
     @Override
     public String getCurrentPhase() {
         return "Uturn";
     }
 
+    /**
+    Gets the next decision in the phase by popping
+    from the queue of decisions. If the queue is empty
+    refill it.
+
+    @return string     the string representing the
+                       decision
+    */
     @Override
     public String getNextDecision() {
-        if (decision_queue.isEmpty()) {
-            decision_queue = UturnQ();
+        if (decisionQueue.isEmpty()) {
+            decisionQueue = UturnQ();
         }
         
-        return decision_queue.remove();
+        return decisionQueue.remove();
     }
 
+    /**
+    Creates a queue of decisions representing the
+    sequence of actions to be executed in the current phase.
+
+    @return decisionQueue       the queue of decisions
+    */
     public Queue<String> UturnQ(){
         Queue<String> uturnQueue;
         if (isLeft){
@@ -50,12 +70,12 @@ public class Uturn implements Phase {
             uturnQueue = maneuver.uturnRight(drone.getHeading());
         }
         while (!uturnQueue.isEmpty()){
-            decision_queue.add(uturnQueue.remove());
+            decisionQueue.add(uturnQueue.remove());
         }
-        decision_queue.add(scan.getString());
-        decision_queue.add(echo.getString(drone.getHeading().right().right()));
+        decisionQueue.add(scan.getString());
+        decisionQueue.add(echo.getString(drone.getHeading().right().right()));
 
-        return decision_queue;
+        return decisionQueue;
     }
     
 }

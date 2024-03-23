@@ -17,7 +17,7 @@ public class FlyToGround implements Phase {
     private ScanAction scan;
     private FlyAction fly;
     private HeadingAction heading;
-    private Queue<String> fly_queue = new LinkedList<>();
+    private Queue<String> flyQueue = new LinkedList<>();
 
     public FlyToGround(Drone drone, Direction direction_to_ground, int distance_to_ground, ActionFactory factory) {
         this.distance_to_ground = distance_to_ground;
@@ -26,40 +26,54 @@ public class FlyToGround implements Phase {
         this.fly = factory.createFlyAction();
         this.scan = factory.createScanAction();
         this.heading = factory.createHeadingAction();
-        this.fly_queue = flyQ();
+        this.flyQueue = flyQ();
     }
 
+    /**
+    Gets the current phase in string format
+
+    @return string     the string representing the
+                       phase
+    */
     @Override
     public String getCurrentPhase() {
         return "FlyToGround";
     }
 
-    //Change so it just turns towards ground (EASY FIX JUST PUT direction_to_ground to turn)
+    /**
+    Gets the next decision in the phase by popping
+    from the queue of decisions. If the drone is not
+    facing ground, turn towards ground. If the queue 
+    is empty return a 'scan'.
+
+    @return string     the string representing the
+                       decision
+    */
     @Override
     public String getNextDecision() {
-        /* //If drone is not facing ground turn right
-        if (!drone.getHeading().equals(direction_to_ground)) {
-            return decision.heading(drone.getHeading().right());
-        }*/
 
-        //if drone is not facing ground turn towards it
         if (!drone.getHeading().equals(direction_to_ground)) {
             return heading.getString(direction_to_ground);
         }
-        
-        //If queue is empty scan
-        if (fly_queue.isEmpty()) {
+
+        if (flyQueue.isEmpty()) {
             return scan.getString();
         }
 
-        return fly_queue.remove();
+        return flyQueue.remove();
     }
 
+    /**
+    Creates a queue of decisions representing the
+    sequence of actions to be executed in the current phase.
+
+    @return decisionQueue       the queue of decisions
+    */
     private Queue<String> flyQ() {
         for (int i = 0; i < distance_to_ground; i++) {
-            fly_queue.add(fly.getString());
+            flyQueue.add(fly.getString());
         }
-        return fly_queue;
+        return flyQueue;
     }
     
 }

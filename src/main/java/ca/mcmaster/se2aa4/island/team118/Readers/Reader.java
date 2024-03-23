@@ -1,6 +1,8 @@
-package ca.mcmaster.se2aa4.island.team118;
+package ca.mcmaster.se2aa4.island.team118.Readers;
 
 import java.util.List;
+
+import ca.mcmaster.se2aa4.island.team118.Direction;
 
 public interface Reader {
 
@@ -16,7 +18,7 @@ public interface Reader {
 
     public Direction getDirection();
 
-    public Integer range();
+    public Integer getRange();
     
     public Integer getCost();
     

@@ -9,7 +9,7 @@ import ca.mcmaster.se2aa4.island.team118.ActionFactories.ActionFactory;
 import ca.mcmaster.se2aa4.island.team118.Actions.EchoAction;
 
 public class DoubleShift implements Phase {
-    private Queue<String> decision_queue = new LinkedList<>();
+    private Queue<String> decisionQueue = new LinkedList<>();
     private EchoAction echo;
     private Drone drone;
     private boolean isLeft;
@@ -20,22 +20,38 @@ public class DoubleShift implements Phase {
         this.echo = factory.createEchoAction();
         this.isLeft = isLeft;
         this.maneuver = new Maneuver(factory);
-        this.decision_queue = DoubleShiftQ();
+        this.decisionQueue = DoubleShiftQ();
     }
 
+    /**
+    Gets the current phase in string format
+
+    @return string     the string representing the
+                       phase
+    */
     @Override
     public String getCurrentPhase() {
         return "DoubleShift";
     }
 
+    /**
+    Gets the next decision in the phase by popping
+    from the queue of decisions
+
+    @return string     the string representing the
+                       decision
+    */
     @Override
     public String getNextDecision() {
-        /*if (decision_queue.isEmpty()) {
-            decision_queue = DoubleShiftQ();
-        }*/
-        return decision_queue.remove();
+        return decisionQueue.remove();
     }
 
+    /**
+    Creates a queue of decisions representing the
+    sequence of actions to be executed in the current phase.
+
+    @return decisionQueue       the queue of decisions
+    */
     public Queue<String> DoubleShiftQ(){
         Queue<String> doubleShiftQueue; 
         if (isLeft){
@@ -44,10 +60,10 @@ public class DoubleShift implements Phase {
             doubleShiftQueue = maneuver.shiftRight2(drone.getHeading());
         }
         while (!doubleShiftQueue.isEmpty()){
-            decision_queue.add(doubleShiftQueue.remove());
+            decisionQueue.add(doubleShiftQueue.remove());
         }
-        decision_queue.add(echo.getString(drone.getHeading()));
-        return decision_queue;
+        decisionQueue.add(echo.getString(drone.getHeading()));
+        return decisionQueue;
 
     }
 }
