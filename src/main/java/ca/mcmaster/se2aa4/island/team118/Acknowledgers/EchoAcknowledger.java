@@ -6,24 +6,28 @@ import ca.mcmaster.se2aa4.island.team118.Direction;
 import ca.mcmaster.se2aa4.island.team118.Drone;
 import ca.mcmaster.se2aa4.island.team118.GameMap;
 import ca.mcmaster.se2aa4.island.team118.Position;
-import ca.mcmaster.se2aa4.island.team118.Reader;
 import ca.mcmaster.se2aa4.island.team118.Tile;
+import ca.mcmaster.se2aa4.island.team118.Readers.Reader;
 
 public class EchoAcknowledger implements Acknowledger{
 
     private Drone drone;
     private GameMap map;
-    private Reader reader;
-    private Direction echo_direction;
 
-    public EchoAcknowledger(Drone drone, GameMap map, Reader reader) {
+    public EchoAcknowledger(Drone drone, GameMap map) {
         this.drone = drone;
         this.map = map;
-        this.echo_direction = reader.getDirection();
-        this.reader = reader;
     }
 
-    public void acknowledgeResults() {
+    /**
+    Acknowledge the results of 'echo' action based on the contents
+    of the 'reader' object. Updates the drones battery, adds
+    a new tile to the map at the echo location.
+
+    @param  reader   the reader object which contains necessary
+                     information from the response
+    */
+    public void acknowledgeResults(Reader reader) {
 
         drone.updateBattery(reader.getCost());
 
@@ -33,10 +37,11 @@ public class EchoAcknowledger implements Acknowledger{
         List<String> biomes = reader.getBiomes();
         
 
+        Direction echoDirection = reader.getDirection();
         Tile tile = new Tile(isSite, creeks, isGround, biomes);
-        Position drone_position = new Position(drone.getLocation().getX(), drone.getLocation().getY());
-        drone_position.move(reader.range(), echo_direction);
-        map.putTile(drone_position, tile);
+        Position dronePosition = new Position(drone.getLocation().getX(), drone.getLocation().getY());
+        dronePosition.move(reader.getRange(), echoDirection);
+        map.putTile(dronePosition, tile);
 
     }
 

@@ -43,12 +43,12 @@ class DroneTest {
         logger.info("Starting Drone distanceToStop method");
         //Ensure Drone Starts in correct location and distanceToStop works at base location
         Drone testDrone = new Drone(this.battery,this.heading);
-        Double distance =  testDrone.distanceToStop();
+        Double distance =  testDrone.distanceToHome();
         assertEquals(0.0,distance);
         //Test whether distance is calculated properly after flight
         testDrone.fly();
         testDrone.fly();
-        distance =  testDrone.distanceToStop();
+        distance =  testDrone.distanceToHome();
         assertEquals(2.0,distance);
     }
 
@@ -68,13 +68,13 @@ class DroneTest {
     void headingTest() {
         logger.info("Starting Drone heading test");
         Drone testDrone = new Drone(this.battery,this.heading);
-        testDrone.heading(Direction.N);
+        testDrone.turn(Direction.N);
         Position location = testDrone.getLocation();
         //Test Right Turn (should turn with momentum)
         assertSame(testDrone.getHeading(),Direction.N);
         assertEquals(location.toString(),new Position(1,1).toString());
         //Test Left Turn
-        testDrone.heading(this.heading);
+        testDrone.turn(this.heading);
         location = testDrone.getLocation();
         assertSame(testDrone.getHeading(),Direction.E);
         assertEquals(location.toString(),new Position(2,2).toString());

@@ -9,34 +9,55 @@ import ca.mcmaster.se2aa4.island.team118.Actions.ScanAction;
 
 public class ExploreGround implements Phase {
 
-    private Queue<String> decision_queue = new LinkedList<>();
+    private Queue<String> decisionQueue = new LinkedList<>();
     private FlyAction fly;
     private ScanAction scan;
 
     public ExploreGround(ActionFactory factory) {
         this.fly = factory.createFlyAction();
         this.scan = factory.createScanAction();
-        this.decision_queue = ExploreGroundQ();
+        this.decisionQueue = ExploreGroundQ();
     }
 
+    /**
+    Gets the current phase in string format
+
+    @return string     the string representing the
+                       phase
+    */
+    @Override
     public String getCurrentPhase() {
         return "ExploreGround";
     }
 
+    /**
+    Gets the next decision in the phase by popping
+    from the queue of decisions. If the queue is empty
+    refill it.
+
+    @return string     the string representing the
+                       decision
+    */
     @Override
     public String getNextDecision() {
-        if (decision_queue.isEmpty()) {
-            decision_queue = ExploreGroundQ();
+        if (decisionQueue.isEmpty()) {
+            decisionQueue = ExploreGroundQ();
         }
         
-        return decision_queue.remove();
+        return decisionQueue.remove();
     }
 
-    private Queue<String> ExploreGroundQ() {
-        decision_queue.add(fly.getString());
-        decision_queue.add(scan.getString());
+    /**
+    Creates a queue of decisions representing the
+    sequence of actions to be executed in the current phase.
 
-        return decision_queue;
+    @return decisionQueue       the queue of decisions
+    */
+    private Queue<String> ExploreGroundQ() {
+        decisionQueue.add(fly.getString());
+        decisionQueue.add(scan.getString());
+
+        return decisionQueue;
     }
     
 }

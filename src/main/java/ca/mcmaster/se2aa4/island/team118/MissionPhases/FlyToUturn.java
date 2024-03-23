@@ -10,7 +10,7 @@ import ca.mcmaster.se2aa4.island.team118.Actions.FlyAction;
 
 public class FlyToUturn implements Phase {
 
-    private Queue<String> decision_queue = new LinkedList<>();
+    private Queue<String> decisionQueue = new LinkedList<>();
     private Drone drone;
     private boolean isLeft;
     private EchoAction echo;
@@ -21,32 +21,52 @@ public class FlyToUturn implements Phase {
         this.isLeft = isLeft;
         this.fly = factory.createFlyAction();
         this.echo = factory.createEchoAction();
-        this.decision_queue = FlyToUturnQ();
+        this.decisionQueue = FlyToUturnQ();
     }
 
+    /**
+    Gets the current phase in string format
+
+    @return string     the string representing the
+                       phase
+    */
     @Override
     public String getCurrentPhase() {
         return "FlyToUturn";
     }
 
+    /**
+    Gets the next decision in the phase by popping
+    from the queue of decisions. If the queue is
+    empty, refill it.
+
+    @return string     the string representing the
+                       decision
+    */
     @Override
     public String getNextDecision() {
-        if (decision_queue.isEmpty()) {
-            decision_queue = FlyToUturnQ();
+        if (decisionQueue.isEmpty()) {
+            decisionQueue = FlyToUturnQ();
         }
         
-        return decision_queue.remove();
+        return decisionQueue.remove();
     }
 
+    /**
+    Creates a queue of decisions representing the
+    sequence of actions to be executed in the current phase.
+
+    @return decisionQueue       the queue of decisions
+    */
     public Queue<String> FlyToUturnQ(){
         if (isLeft){
-            decision_queue.add(echo.getString(drone.getHeading().left()));
-            decision_queue.add(fly.getString());
+            decisionQueue.add(echo.getString(drone.getHeading().left()));
+            decisionQueue.add(fly.getString());
         } else {
-            decision_queue.add(echo.getString(drone.getHeading().right()));
-            decision_queue.add(fly.getString());
+            decisionQueue.add(echo.getString(drone.getHeading().right()));
+            decisionQueue.add(fly.getString());
         }
-        return decision_queue;
+        return decisionQueue;
     }
      
 }

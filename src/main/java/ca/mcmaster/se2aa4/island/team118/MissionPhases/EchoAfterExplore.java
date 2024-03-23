@@ -14,11 +14,23 @@ public class EchoAfterExplore implements Phase {
         this.echo = factory.createEchoAction();
     }
     
+    /**
+    Gets the current phase in string format
+
+    @return string     the string representing the
+                       phase
+    */
     @Override
     public String getCurrentPhase() {
         return "EchoAfterExplore";
     }
 
+    /**
+    Gets the next decision in the phase; echo
+
+    @return string     the string representing the
+                       decision
+    */
     @Override
     public String getNextDecision() {
         return echo.getString(drone.getHeading());

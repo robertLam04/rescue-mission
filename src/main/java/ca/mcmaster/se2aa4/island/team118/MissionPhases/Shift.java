@@ -25,11 +25,25 @@ public class Shift implements Phase {
         this.decision_queue = ShiftQ();
     }
 
+    /**
+    Gets the current phase in string format
+
+    @return string     the string representing the
+                       phase
+    */
     @Override
     public String getCurrentPhase() {
         return "Shift";
     }
 
+    /**
+    Gets the next decision in the phase by popping
+    from the queue of decisions. If the queue is empty,
+    refill it.
+
+    @return string     the string representing the
+                       decision
+    */
     @Override
     public String getNextDecision() {
         if (decision_queue.isEmpty()) {
@@ -38,6 +52,12 @@ public class Shift implements Phase {
         return decision_queue.remove();
     }
 
+    /**
+    Creates a queue of decisions representing the
+    sequence of actions to be executed in the current phase.
+
+    @return decisionQueue       the queue of decisions
+    */
     public Queue<String> ShiftQ(){
         Queue<String> shiftQueue;
         if (isLeft){
