@@ -6,13 +6,15 @@ import org.json.JSONArray;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/* SORRY AMOS
- * class GameMapTest {
+
+  class GameMapTest {
     Tile Creek;
     Tile Site;
     Tile Ocean;
@@ -20,18 +22,14 @@ import static org.junit.jupiter.api.Assertions.*;
     private final Logger logger = LogManager.getLogger();
     @BeforeEach
     void setup(){
-        this.Beach = new Tile();
-        this.Beach.addIsGround(Boolean.TRUE);
-        this.Ocean = new Tile();
-        this.Beach.addIsGround(Boolean.FALSE);
-        this.Creek = new Tile();
-        JSONArray creek = new  JSONArray();
-        this.Creek.addCreeks(creek);
-        creek.put("CREEK");
-        this.Site= new Tile();
-        JSONArray site = new  JSONArray();
-        site.put("POI");
-        this.Site.addSites(site);
+        List<String> creeks = new ArrayList<>();
+        creeks.add("CREEK");
+        List<String> biomes = new ArrayList<>();
+        biomes.add("BEACH");
+        this.Site = new Tile(Boolean.TRUE,new ArrayList<>(),Boolean.TRUE,new ArrayList<>());
+        this.Creek = new Tile(Boolean.FALSE,creeks,Boolean.TRUE,new ArrayList<>());
+        this.Beach = new Tile(Boolean.FALSE,new ArrayList<>(),Boolean.TRUE,biomes);
+        this.Ocean = new Tile(Boolean.FALSE,new ArrayList<>(),Boolean.FALSE,new ArrayList<>());
     }
 
     @Test
@@ -45,9 +43,10 @@ import static org.junit.jupiter.api.Assertions.*;
         //Tests placing a Tile in a filled position (should swap tiles)
         testMap.putTile(startPosition,this.Beach);
         assertEquals(this.Beach,testMap.getTile(startPosition));
-        //Test placing multiple tiles in extremely far off position
+        //Test placing  tiles in extremely far off position
         Position extremePosition = new Position(10000,-10000000);
-       testMap.putTile(extremePosition,this.Site);
+        testMap.putTile(extremePosition,this.Site);
+        assertEquals(this.Site,testMap.getTile(extremePosition));
     }
 
 
@@ -71,15 +70,6 @@ import static org.junit.jupiter.api.Assertions.*;
         testMap.putTile(extremePosition,this.Site);
         assertEquals(extremePosition,testMap.sitePosition());
 
-        //Test that no position is returned for a site tile that is empty
-        JSONArray emptyPOI = new JSONArray();
-        Tile emptySite = new Tile();
-        emptySite.addSites(emptyPOI);
-        testMap.putTile(extremePosition,emptySite);
-        testException = assertThrows(NoSuchElementException.class , testMap::sitePosition);
-        assertEquals("Emergency site not found", testException.getMessage());
-
-
     }
 
     @Test
@@ -88,9 +78,7 @@ import static org.junit.jupiter.api.Assertions.*;
         GameMap testMap = new GameMap();
         Position startPosition = new Position(0,0);
         Position extremePosition = new Position(10000,-10000000);
-        JSONArray emptyPOI = new JSONArray();
-        Tile emptyCreek = new Tile();
-        emptyCreek.addCreeks(emptyPOI);
+
         //Test that no positions are returned for empty map
         assertTrue(testMap.creekPositions().isEmpty());
         //Test that no positions arr returned for non-empty map with no creek
@@ -99,9 +87,23 @@ import static org.junit.jupiter.api.Assertions.*;
         //Test that a position is returned for a map with a creek
         testMap.putTile(extremePosition,this.Creek);
         assertEquals("CREEK",testMap.creekPositions().get(extremePosition));
-        //Test that no position is returned for a creek tile that is empty
-        testMap.putTile(extremePosition,emptyCreek);
-        assertTrue(testMap.creekPositions().isEmpty());
     }
+
+    @Test
+    void closestCreek() {
+        GameMap testMap = new GameMap();
+        Position closePosition = new Position(10,10);
+        Position extremePosition = new Position(10000,-10000000);
+        List<String> creek = new ArrayList<>();
+        creek.add("CREEK2");
+        Tile FarCreek = new Tile(Boolean.FALSE,creek,Boolean.TRUE,new ArrayList<>());
+        //Test that map returns no creeks for a map without creeks
+        assertEquals("No creeks found",testMap.closestCreek());
+        //Test that method properly returns closest creek in map
+        testMap.putTile(extremePosition,this.Creek);
+        testMap.putTile(closePosition,FarCreek);
+        assertEquals("CREEK2",testMap.closestCreek());
+
+    }
+
 }
- */
