@@ -1,6 +1,6 @@
 package ca.mcmaster.se2aa4.island.team118.ActionFactoriesTests;
 
-import ca.mcmaster.se2aa4.island.team118.ActionFactories.JsonFactory;
+import ca.mcmaster.se2aa4.island.team118.ActionFactories.JsonActionFactory;
 import ca.mcmaster.se2aa4.island.team118.Actions.*;
 import ca.mcmaster.se2aa4.island.team118.Direction;
 import org.apache.logging.log4j.LogManager;
@@ -9,12 +9,12 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class JsonFactoryTest {
+class JsonActionFactoryTest {
     private final Logger logger = LogManager.getLogger();
     @Test
     void createFlyAction() {
         logger.info("Starting createFlyAction Test");
-        JsonFactory testFactory = new JsonFactory();
+        JsonActionFactory testFactory = new JsonActionFactory();
         JsonFlyAction fly = new JsonFlyAction();
         assertEquals(fly.getString(),testFactory.createFlyAction().getString());
     }
@@ -22,7 +22,7 @@ class JsonFactoryTest {
     @Test
     void createHeadingAction() {
         logger.info("Starting createHeadingAction Test");
-        JsonFactory testFactory = new JsonFactory();
+        JsonActionFactory testFactory = new JsonActionFactory();
         JsonHeadingAction action = new JsonHeadingAction();
         assertEquals(action.getString(Direction.E),testFactory.createHeadingAction().getString(Direction.E));
     }
@@ -30,7 +30,7 @@ class JsonFactoryTest {
     @Test
     void createScanAction() {
         logger.info("Starting createScanAction Test");
-        JsonFactory testFactory = new JsonFactory();
+        JsonActionFactory testFactory = new JsonActionFactory();
         JsonScanAction action = new JsonScanAction();
         assertEquals(action.getString(),testFactory.createScanAction().getString());
     }
@@ -38,7 +38,7 @@ class JsonFactoryTest {
     @Test
     void createEchoAction() {
         logger.info("Starting createEchoAction Test");
-        JsonFactory testFactory = new JsonFactory();
+        JsonActionFactory testFactory = new JsonActionFactory();
         JsonEchoAction action = new JsonEchoAction();
         assertEquals(action.getString(Direction.E),testFactory.createEchoAction().getString(Direction.E));
     }
@@ -46,7 +46,7 @@ class JsonFactoryTest {
     @Test
     void createStopAction() {
         logger.info("Starting createStopAction Test");
-        JsonFactory testFactory = new JsonFactory();
+        JsonActionFactory testFactory = new JsonActionFactory();
         JsonStopAction action = new JsonStopAction();
         assertEquals(action.getString(),testFactory.createStopAction().getString());
     }

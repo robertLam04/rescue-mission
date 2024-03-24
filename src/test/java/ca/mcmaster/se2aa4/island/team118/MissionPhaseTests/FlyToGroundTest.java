@@ -1,7 +1,7 @@
 package ca.mcmaster.se2aa4.island.team118.MissionPhaseTests;
 
 import ca.mcmaster.se2aa4.island.team118.ActionFactories.ActionFactory;
-import ca.mcmaster.se2aa4.island.team118.ActionFactories.JsonFactory;
+import ca.mcmaster.se2aa4.island.team118.ActionFactories.JsonActionFactory;
 import ca.mcmaster.se2aa4.island.team118.Actions.FlyAction;
 import ca.mcmaster.se2aa4.island.team118.Actions.HeadingAction;
 import ca.mcmaster.se2aa4.island.team118.Actions.JsonFlyAction;
@@ -24,7 +24,7 @@ class FlyToGroundTest {
     @BeforeEach
     void setup(){
         this.drone = new Drone(3000, Direction.E);
-        this.testfactory = new JsonFactory();
+        this.testfactory = new JsonActionFactory();
     }
 
     @Test

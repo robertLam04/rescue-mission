@@ -1,7 +1,7 @@
 package ca.mcmaster.se2aa4.island.team118.MissionPhaseTests;
 
 import ca.mcmaster.se2aa4.island.team118.ActionFactories.ActionFactory;
-import ca.mcmaster.se2aa4.island.team118.ActionFactories.JsonFactory;
+import ca.mcmaster.se2aa4.island.team118.ActionFactories.JsonActionFactory;
 import ca.mcmaster.se2aa4.island.team118.Actions.JsonStopAction;
 import ca.mcmaster.se2aa4.island.team118.Actions.StopAction;
 import ca.mcmaster.se2aa4.island.team118.MissionPhases.Phase;
@@ -18,7 +18,7 @@ class ReturnHomeTest {
     private final Logger logger = LogManager.getLogger();
     @BeforeEach
     void setup(){
-        this.testfactory = new JsonFactory();
+        this.testfactory = new JsonActionFactory();
     }
 
     @Test

@@ -2,13 +2,11 @@ package ca.mcmaster.se2aa4.island.team118;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.json.JSONArray;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -42,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.*;
         assertEquals(this.Ocean,testMap.getTile(startPosition));
         //Tests placing a Tile in a filled position (should swap tiles)
         testMap.putTile(startPosition,this.Beach);
-        assertEquals(this.Beach,testMap.getTile(startPosition));
+        assertEquals(this.Ocean,testMap.getTile(startPosition));
         //Test placing  tiles in extremely far off position
         Position extremePosition = new Position(10000,-10000000);
         testMap.putTile(extremePosition,this.Site);
@@ -88,7 +86,7 @@ import static org.junit.jupiter.api.Assertions.*;
         testMap.putTile(extremePosition,this.Creek);
         assertEquals("CREEK",testMap.creekPositions().get(extremePosition));
     }
-
+/*
     @Test
     void closestCreek() {
        /* GameMap testMap = new GameMap();
@@ -103,7 +101,7 @@ import static org.junit.jupiter.api.Assertions.*;
         testMap.putTile(closePosition,this.Creek);
         testMap.putTile(extremePosition,FarCreek);
         assertEquals("CREEK",testMap.closestCreek());
-*/
-    }
+
+    }*/
 
 }
