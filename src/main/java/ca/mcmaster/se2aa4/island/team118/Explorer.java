@@ -11,20 +11,19 @@ import org.json.JSONTokener;
 
 import ca.mcmaster.se2aa4.island.team118.Acknowledgers.*;
 import ca.mcmaster.se2aa4.island.team118.ActionFactories.ActionFactory;
-import ca.mcmaster.se2aa4.island.team118.ActionFactories.JsonFactory;
+import ca.mcmaster.se2aa4.island.team118.ActionFactories.JsonActionFactory;
 import ca.mcmaster.se2aa4.island.team118.Controllers.Controller;
 import ca.mcmaster.se2aa4.island.team118.Controllers.GridSearchController;
+import ca.mcmaster.se2aa4.island.team118.Readers.JsonReader;
+import ca.mcmaster.se2aa4.island.team118.Readers.Reader;
 
 public class Explorer implements IExplorerRaid {
 
     private final Logger logger = LogManager.getLogger();
-    Controller midController;
-    Acknowledger acknowledger;
-    Drone drone;
-    GameMap map;
-    ActionFactory factory;
-    String previous_decision;
-    Reader json_reader;
+    private Controller controller;
+    private String previousDecision;
+    private Drone drone;
+    private GameMap map;
 
     @Override
     public void initialize(String s) {
@@ -33,47 +32,49 @@ public class Explorer implements IExplorerRaid {
         logger.info("** Initialization info:\n {}",info.toString(2));
         String direction = info.getString("heading").toLowerCase();
         Integer batteryLevel = info.getInt("budget");
-        Direction initial_heading = Direction.fromString(direction);
+        Direction initialHeading = Direction.fromString(direction);
 
         logger.info("The drone is facing {}", direction);
         logger.info("Battery level is {}", batteryLevel);
 
-        factory = new JsonFactory();
-        drone = new Drone(batteryLevel, initial_heading);
-        midController = new GridSearchController(drone, factory);
+        ActionFactory factory = new JsonActionFactory();
+        drone = new Drone(batteryLevel, initialHeading);
+        controller = new GridSearchController(drone, factory);
         map = new GameMap();
 
     }
 
     @Override
     public String takeDecision() {
-        previous_decision = midController.makeDecision();
-        return previous_decision;
+        previousDecision = controller.makeDecision();
+        return previousDecision;
     }
 
     @Override
     public void acknowledgeResults(String s) {
-        json_reader = new JsonReader(previous_decision, s);
-        switch (json_reader.getDecision()) {
+        Acknowledger acknowledger;
+        Reader jsonReader = new JsonReader(previousDecision, s);
+        switch (jsonReader.getDecision()) {
             case "fly":
-                acknowledger = new FlyAcknowledger(drone, json_reader);
+                acknowledger = new FlyAcknowledger(drone);
                 break;
             case "heading": 
-                acknowledger = new HeadingAcknowledger(drone, json_reader);
+                acknowledger = new HeadingAcknowledger(drone);
                 break;
             case "echo":
-                acknowledger = new EchoAcknowledger(drone, map, json_reader);
+                acknowledger = new EchoAcknowledger(drone, map);
                 break;
             case "scan":
-                acknowledger = new ScanAcknowledger(drone, map, json_reader);
+                acknowledger = new ScanAcknowledger(drone, map);
                 break;
             case "stop":
+                acknowledger = new StopAcknowledger();
                 break;
             default:
                 throw new IllegalArgumentException();
         }
-        acknowledger.acknowledgeResults();
-        midController.processDecision(json_reader);
+        acknowledger.acknowledgeResults(jsonReader);
+        controller.updatePhase(jsonReader);
     }
 
     @Override

@@ -4,22 +4,27 @@ import java.util.List;
 
 import ca.mcmaster.se2aa4.island.team118.Drone;
 import ca.mcmaster.se2aa4.island.team118.GameMap;
-import ca.mcmaster.se2aa4.island.team118.Position;
-import ca.mcmaster.se2aa4.island.team118.Reader;
 import ca.mcmaster.se2aa4.island.team118.Tile;
+import ca.mcmaster.se2aa4.island.team118.Readers.Reader;
 
 public class ScanAcknowledger implements Acknowledger{
     private Drone drone;
     private GameMap map;
-    private Reader reader;
 
-    public ScanAcknowledger(Drone drone, GameMap map, Reader reader) {
+    public ScanAcknowledger(Drone drone, GameMap map) {
         this.drone = drone;
         this.map = map;
-        this.reader = reader;
     }
 
-    public void acknowledgeResults() {
+    /**
+    Acknowledge the results of 'scan' action based on the contents
+    of the 'reader' object. Updates the drones battery, adds
+    a new tile to the map at the drone's location.
+
+    @param  reader   the reader object which contains necessary
+                     information from the response
+    */
+    public void acknowledgeResults(Reader reader) {
 
         drone.updateBattery(reader.getCost());
 
@@ -27,11 +32,9 @@ public class ScanAcknowledger implements Acknowledger{
         List<String> creeks = reader.getCreeks();
         boolean isSite = reader.isSite();
         List<String> biomes = reader.getBiomes();
-        
 
         Tile tile = new Tile(isSite, creeks, isGround, biomes);
-        Position drone_position = new Position(drone.getLocation().getX(), drone.getLocation().getY());
-        map.putTile(drone_position, tile);
+        map.putTile(drone.getLocation(), tile);
 
     }
 

@@ -5,14 +5,12 @@ import java.util.List;
 public class Tile {
 
     private boolean isGround;
-    private boolean site;
+    private boolean isSite;
     private List<String> creeks;
     private List<String> biomes;
 
-    /* Might want to refactor this to be immutable at some point */
-
     public Tile(boolean site, List<String> creeks, boolean isGround, List<String> biomes) {
-        this.site = site;
+        this.isSite = site;
         this.creeks = creeks;
         this.isGround = isGround;
         this.biomes = biomes;
@@ -23,11 +21,11 @@ public class Tile {
     }
 
     public boolean isPOI() {
-        return !creeks.isEmpty() || site;
+        return !creeks.isEmpty() || isSite;
     }   
 
     public boolean isSite() {
-        return site;
+        return this.isSite;
     }
 
     public boolean isCreek() {
@@ -41,7 +39,7 @@ public class Tile {
     @Override
     public String toString() {
         return "Tile{" +
-            "isSite=" + (this.site ? "true" : "false") +
+            "isSite=" + (this.isSite ? "true" : "false") +
             ", isCreek=" + (this.creeks != null ? this.creeks.toString() : "null") +
             ", isGround=" + (this.isGround ? "true" : "false") +
             ", biomes=" + (this.biomes != null ? this.biomes.toString() : "null") +

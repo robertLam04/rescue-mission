@@ -1,8 +1,5 @@
 package ca.mcmaster.se2aa4.island.team118;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import ca.mcmaster.se2aa4.island.team118.ActionFactories.ActionFactory;
 import ca.mcmaster.se2aa4.island.team118.Actions.FlyAction;
 import ca.mcmaster.se2aa4.island.team118.Actions.HeadingAction;
@@ -12,7 +9,6 @@ import java.util.LinkedList;
 
 public class Maneuver {
 
-    private final Logger logger = LogManager.getLogger();
     private FlyAction fly;
     private HeadingAction heading;
 
@@ -21,6 +17,16 @@ public class Maneuver {
         this.heading = factory.createHeadingAction();
     }
     
+    /**
+    The following methods each define a complex 'maneuver'
+    that can be executed by the drone. These maneuvers are
+    just sequences of 'fly' and 'heading' calls in a specific
+    order.
+     
+    @param direction of the drone at start of maneuver
+    @return Queue<String> representing the sequence of 
+            decisions needed to perfrom the maneuver
+    */
     public Queue<String> uturnLeft(Direction droneHeading) {
         Queue<String> decisionQueue = new LinkedList<>();
         decisionQueue.add(heading.getString(droneHeading.left()));
@@ -98,25 +104,6 @@ public class Maneuver {
         decisionQueue.add(heading.getString(droneHeading));
         return decisionQueue;
     }
-
-    //Spiral size contols the 'step' of the spiral
-    public Queue<String> spiral(Direction droneHeading, int spiral_size) {
-        Queue<String> decisionQueue = new LinkedList<>();
-        logger.info("WTF");
-        Queue<String> sharpRight = sharpTurnRight(droneHeading);
-        for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < spiral_size; j++) {
-                decisionQueue.add(fly.getString());
-            }
-            while (!sharpRight.isEmpty()) {
-                String decision = sharpRight.remove();
-                decisionQueue.add(decision);
-            }
-            sharpRight = sharpTurnRight(droneHeading);
-        }
-        return decisionQueue;
-    }
-
 }
 
 
