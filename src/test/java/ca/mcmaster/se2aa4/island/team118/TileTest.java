@@ -6,76 +6,74 @@ import org.json.JSONArray;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
-/*class TileTest {
+class TileTest {
     private boolean IS;
     private boolean Not;
+    private List<String> biomes;
+    private List<String> creeks;
     private final Logger logger = LogManager.getLogger();
     @BeforeEach
     void setUp() {
         this.IS = Boolean.TRUE;
         this.Not =  Boolean.FALSE;
+        this.creeks = new ArrayList<>();
+        creeks.add("CREEK");
+        this.biomes = new ArrayList<>();
+        biomes.add("BEACH");
     }
 
-    @Test
-    void addIsBorder() {
-        logger.info("Starting Tile IsBorder test");
-        Tile testTile = new Tile();
-        //Test if tile properly updates to represent a border
-        testTile.addIsBorder(this.IS);
-        assertEquals(this.IS,testTile.isBorder());
-        //Test if tile properly updates to show it is not a border
-        testTile.addIsBorder(this.Not);
-        assertEquals(this.Not,testTile.isBorder());
-    }
 
     @Test
-    void addIsSite() {
+    void IsSite() {
         logger.info("Starting Tile IsSite test");
-        Tile testTile = new Tile();
+        Tile testTile = new Tile(this.IS,this.creeks,this.Not,this.biomes);
         //Test if tile properly updates to represent a site
-        testTile.addIsSite(testTile.isSite);
+        assertTrue(testTile.isSite());
         //Test if tile properly updates to show it is not a site
-        testTile.addIsSite(this.Not);
-        assertEquals(this.Not,testTile.isSite);
+        testTile = new Tile(this.Not,this.creeks,this.Not,this.biomes);
+        assertFalse(testTile.isSite());
     }
 
     @Test
-    void addIsCreek() {
+    void IsCreek() {
         logger.info("Starting Tile IsCreek test");
-        Tile testTile = new Tile();
+        Tile testTile = new Tile(this.Not,this.creeks,this.Not,this.biomes);
         //Test if tile properly updates to represent a creek
-        testTile.addIsCreek(this.IS);
-        assertEquals(this.IS,testTile.isCreek);
+        assertTrue(testTile.isCreek());
         //Test if tile properly updates to show it is not a creek
-        testTile.addIsCreek(this.Not);
-        assertEquals(this.Not,testTile.isCreek);
+        testTile = new Tile(this.Not, new ArrayList<>() , this.Not, this.biomes);
+        assertFalse(testTile.isCreek());
     }
 
     @Test
     void addIsGround() {
         logger.info("Starting Tile IsGround test");
-        Tile testTile = new Tile();
+        Tile testTile = new Tile(this.Not,this.creeks,this.IS,this.biomes);
         //Test if tile properly updates to represent ground
-        testTile.addIsGround(this.IS);
-        assertEquals(this.IS,testTile.isGround);
+        assertTrue(testTile.isGround());
         //Test if tile properly updates to show it is not ground
-        testTile.addIsGround(this.Not);
-        assertEquals(this.Not,testTile.isGround);
+        testTile = new Tile(this.IS,this.creeks,this.Not,this.biomes);
+        assertFalse(testTile.isGround());
     }
 
     @Test
-    void addbiomes() {
-        logger.info("Starting Tile IsGround test");
-        Tile testTile = new Tile();
-        JSONArray biome = new JSONArray();
-        biome.put("Beach");
-        //Test if method properly updates biome
-        testTile.addbiomes(biome);
-        assertEquals(biome,testTile.biomes);
-        biome.remove(0);
+    void getCreeks() {
+        Tile testTile = new Tile(this.Not,this.creeks,this.IS,this.biomes);
+    }
+    @Test
+    void isPOI(){
+        logger.info("Starting Tile IsPOI test");
+        Tile testTile = new Tile(this.Not,this.creeks,this.IS,this.biomes);
+        //Test if tile properly updates to represent a POI
+        assertTrue(testTile.isPOI());
+        //Test if tile properly updates to show it is not a POI
+        testTile = new Tile(this.Not,new ArrayList<>(),this.IS,this.biomes);
+        assertFalse(testTile.isPOI());
     }
 }
- * 
- */
+

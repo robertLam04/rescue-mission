@@ -8,8 +8,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-/*
- * public class PositionTest {
+
+  public class PositionTest {
     private Integer x;
     private Integer y;
     private Integer altX;
@@ -24,62 +24,24 @@ import static org.junit.jupiter.api.Assertions.*;
     }
 
     @Test
-    @DisplayName("Testing method to move along x")
-    void moveXTest() {
-        logger.info("Starting Position moveX test");
-        Position testPosition = new Position(x,y);
-        //Test if Position updates correctly in positive x direction
-        testPosition.moveX(7);
-        assertEquals(testPosition.getX(),7);
-        //Test if Position updates correctly in negative x direction
-        testPosition.moveX(-10);
-        assertEquals(testPosition.getX(),-3);
-    }
-
-    @Test
-    @DisplayName("Testing method to move along y")
-    void moveYTest() {
+    @DisplayName("Testing method to move test")
+    void moveTest() {
         logger.info("Starting Position moveY test");
         Position testPosition = new Position(x,y);
+        //Test if Position updates correctly in positive x direction
+        testPosition.move(7,Direction.E);
+        assertEquals(7,testPosition.getX());
         //Test if Position updates correctly in positive y direction
-        testPosition.moveY(7);
-        assertEquals(testPosition.getY(),7);
+        testPosition.move(7,Direction.N);
+        assertEquals(7,testPosition.getY());
         //Test if Position updates correctly in negative y direction
-        testPosition.moveY(-10);
-        assertEquals(testPosition.getY(),-3);
+        testPosition.move(10,Direction.S);
+        assertEquals(-3,testPosition.getY());
+        //Test if Position updates correctly in negative x direction
+        testPosition.move(14,Direction.W);
+        assertEquals(-7,testPosition.getX());
     }
 
-    @Test
-    @DisplayName("Testing method to set specific x coordinate")
-    void setXTest() {
-        logger.info("Starting Position setX test");
-        Position testPosition = new Position(x,y);
-        //Test setting a positive x coordinate
-        testPosition.setX(9);
-        assertEquals(testPosition.getX(),9);
-        //Test setting a negative x coordinate
-        testPosition.setX(-1);
-        assertEquals(testPosition.getX(),-1);
-        //Test setting zero coordinate
-        testPosition.setX(0);
-        assertEquals(testPosition.getX(),0);
-    }
-
-    @Test
-    @DisplayName("Testing method to set specific y coordinate")
-    void setYTest() {
-        logger.info("Starting Position setY test");
-        Position testPosition = new Position(x,y);
-        //Test setting a positive y coordinate
-        testPosition.setY(9);
-        assertEquals(testPosition.getY(),9);
-        //Test setting a negative Y coordinate
-        testPosition.setY(-1);
-        assertEquals(testPosition.getY(),-1);
-        //Test setting zero coordinate
-        testPosition.setY(0);
-        assertEquals(testPosition.getY(),0);
-    }
 
     @Test
     @DisplayName("Testing method to convert coordinate position to strings")
@@ -105,10 +67,22 @@ import static org.junit.jupiter.api.Assertions.*;
         assertEquals(0.0,distance1);
         assertEquals(0.0,distance2);
         //Test whether method returns correct distance from two different positions
-        Double distance = position1.distanceFrom(position2);
-        assertEquals(Math.sqrt(altX*altX + altY*altY),distance);
+        assertEquals(16.97056274847714,position1.distanceFrom(position2));
     }
 
-}
- */
+      @Test
+      void testEquals() {
+          Position testPosition = new Position(x,y);
+          Position position1 = new Position(x,y);
+          Position position2 = new Position(altX,altY);
+          //confirm that position1 is equal to the test position
+          assertTrue(testPosition.equals(position1));
+          //confirm that position2 is different from the test position
+          assertFalse(testPosition.equals(position2));
+          //confirm test position is different from a different object
+          assertFalse(testPosition.equals(new String()));
+
+      }
+  }
+
 
