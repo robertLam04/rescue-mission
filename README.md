@@ -1,4 +1,3 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/OY6OZuzi)
 # [A2] Island ca.mcmaster.se2aa4.island.team118.Explorer
 
 - Authors:
@@ -12,10 +11,6 @@ This product is an _exploration command center_ for the [Island](https://ace-des
 
 - The `ca.mcmaster.se2aa4.island.team_XXX_.Explorer` class implements the command center, used to compete with the others. (XXX being the team identifier)
 - The `Runner` class allows one to run the command center on a specific map.
-
-### Strategy description
-
-The exploration strategy is for now to stop exploring as soon as we start. We stay safe and fly back to base immediately.
 
 ## How to compile, run and deploy
 
